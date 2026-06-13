@@ -1,0 +1,31 @@
+{
+  "name": "masqo",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "test:watch": "turbo run test:watch",
+    "lint": "turbo run lint",
+    "type-check": "turbo run type-check",
+    "build:engine": "turbo run build --filter=@masqo/engine",
+    "build:cli": "turbo run build --filter=@masqo/cli",
+    "build:ext": "turbo run build --filter=@masqo/extension",
+    "build:web": "turbo run build --filter=@masqo/web"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@typescript-eslint/eslint-plugin": "^6.19.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "eslint": "^8.56.0",
+    "prettier": "^3.2.4",
+    "turbo": "^1.11.3",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.1"
+  },
+  "packageManager": "npm@10.2.4"
+}
