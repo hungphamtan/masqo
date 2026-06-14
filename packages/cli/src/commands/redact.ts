@@ -28,9 +28,15 @@ export const redactCommand = new Command('redact')
   .option('-o, --output <file>', 'Write output to file instead of stdout')
   .option('--hook', 'Hook mode: non-interactive, JSON output, exit code signals detections')
   .action(async (file: string | undefined, opts: RedactOptions) => {
-    const input = file
-      ? await readFile(file, 'utf8')
-      : await readStdin()
+    const input = await (async () => {
+      try {
+        return file ? await readFile(file, 'utf8') : await readStdin()
+      } catch (e: unknown) {
+        const msg = e instanceof Error ? e.message : String(e)
+        process.stderr.write(`error: ${msg}\n`)
+        process.exit(1)
+      }
+    })()
 
     const mode = MODES[opts.mode] ?? ReplacementMode.Redact
     const engine = createEngine()
