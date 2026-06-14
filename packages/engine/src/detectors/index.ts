@@ -8,6 +8,9 @@ import { detectBearerTokens } from './secrets/bearer.js'
 import { detectCookies } from './secrets/cookies.js'
 import { detectDatabaseSecrets } from './secrets/database.js'
 import { detectEnvSecrets } from './secrets/env.js'
+import { detectStackTraces } from './code/stacktrace.js'
+import { detectHttpSecrets } from './code/http.js'
+import { detectConfigSecrets } from './code/config.js'
 
 interface Registry {
   register(name: string, detector: Detector): void
@@ -32,6 +35,9 @@ export function createRegistry(options: CreateRegistryOptions = {}): Registry {
     detectors.set('cookies', { name: 'cookies', detect: detectCookies })
     detectors.set('database', { name: 'database', detect: detectDatabaseSecrets })
     detectors.set('env', { name: 'env', detect: detectEnvSecrets })
+    detectors.set('stacktrace', { name: 'stacktrace', detect: detectStackTraces })
+    detectors.set('http', { name: 'http', detect: detectHttpSecrets })
+    detectors.set('config', { name: 'config', detect: detectConfigSecrets })
   }
 
   return {
