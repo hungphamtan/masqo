@@ -46,25 +46,14 @@ export function Privacy() {
 
       <Section title="4. Analytics and telemetry">
         <p style={s.p}>
-          The web app uses <strong>Plausible Analytics</strong> — a privacy-first analytics tool that
-          collects no personal data, uses no cookies, and cannot fingerprint you across sites.
-          Plausible collects only aggregate, anonymous page view counts (page URL, referrer, browser
-          type, country). It does not collect IP addresses, user IDs, or any content you process.
-        </p>
-        <p style={s.p}>
-          Analytics are <strong>opt-in</strong>: you are asked on your first visit and nothing is
-          loaded until you accept. You can change your choice at any time by clearing your browser's
-          local storage for this site. We do not use Google Analytics, Mixpanel, Sentry, or any
-          similar service.
-        </p>
-        <p style={s.p}>
-          The browser extension contains no analytics. The web app's Plausible script is loaded only
-          from <code style={s.code}>plausible.io</code> and does not affect extension users.
+          The web app and browser extension contain no analytics, crash reporting, or telemetry SDKs.
+          We do not use Google Analytics, Mixpanel, Sentry, or any similar service that would
+          receive data about your usage.
         </p>
         <p style={s.p}>
           The web app is served as a static site. Standard web server access logs (IP address,
           user-agent, page URL, timestamp) may be retained by our hosting provider for up to 30 days
-          for abuse prevention. These logs do not contain any content you processed.
+          for abuse prevention and capacity planning. These logs do not contain any content you processed.
         </p>
       </Section>
 
