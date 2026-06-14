@@ -11,6 +11,16 @@ import { detectEnvSecrets } from './secrets/env.js'
 import { detectStackTraces } from './code/stacktrace.js'
 import { detectHttpSecrets } from './code/http.js'
 import { detectConfigSecrets } from './code/config.js'
+import { detectPrivateKeys } from './secrets/privatekeys.js'
+import { detectSlackSecrets } from './secrets/slack.js'
+import { detectOpenAiSecrets } from './secrets/openai.js'
+import { detectGitlabSecrets } from './secrets/gitlab.js'
+import { detectSendgridSecrets } from './secrets/sendgrid.js'
+import { detectTwilioSecrets } from './secrets/twilio.js'
+import { detectNpmSecrets } from './secrets/npm.js'
+import { detectPypiSecrets } from './secrets/pypi.js'
+import { detectAzureSecrets } from './secrets/azure.js'
+import { detectBasicAuthUrls } from './secrets/basicauth.js'
 
 interface Registry {
   register(name: string, detector: Detector): void
@@ -38,6 +48,16 @@ export function createRegistry(options: CreateRegistryOptions = {}): Registry {
     detectors.set('stacktrace', { name: 'stacktrace', detect: detectStackTraces })
     detectors.set('http', { name: 'http', detect: detectHttpSecrets })
     detectors.set('config', { name: 'config', detect: detectConfigSecrets })
+    detectors.set('privatekeys', { name: 'privatekeys', detect: detectPrivateKeys })
+    detectors.set('slack', { name: 'slack', detect: detectSlackSecrets })
+    detectors.set('openai', { name: 'openai', detect: detectOpenAiSecrets })
+    detectors.set('gitlab', { name: 'gitlab', detect: detectGitlabSecrets })
+    detectors.set('sendgrid', { name: 'sendgrid', detect: detectSendgridSecrets })
+    detectors.set('twilio', { name: 'twilio', detect: detectTwilioSecrets })
+    detectors.set('npm', { name: 'npm', detect: detectNpmSecrets })
+    detectors.set('pypi', { name: 'pypi', detect: detectPypiSecrets })
+    detectors.set('azure', { name: 'azure', detect: detectAzureSecrets })
+    detectors.set('basicauth', { name: 'basicauth', detect: detectBasicAuthUrls })
   }
 
   return {
