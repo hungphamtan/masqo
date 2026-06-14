@@ -7,6 +7,7 @@ import { detectJwt } from './secrets/jwt.js'
 import { detectBearerTokens } from './secrets/bearer.js'
 import { detectCookies } from './secrets/cookies.js'
 import { detectDatabaseSecrets } from './secrets/database.js'
+import { detectEnvSecrets } from './secrets/env.js'
 
 interface Registry {
   register(name: string, detector: Detector): void
@@ -30,6 +31,7 @@ export function createRegistry(options: CreateRegistryOptions = {}): Registry {
     detectors.set('bearer', { name: 'bearer', detect: detectBearerTokens })
     detectors.set('cookies', { name: 'cookies', detect: detectCookies })
     detectors.set('database', { name: 'database', detect: detectDatabaseSecrets })
+    detectors.set('env', { name: 'env', detect: detectEnvSecrets })
   }
 
   return {
