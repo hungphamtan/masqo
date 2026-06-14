@@ -6,8 +6,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <div style={s.page}>
       <header style={s.header}>
         <div style={s.headerInner}>
-          <Link to="/" style={{ textDecoration: 'none' }}>
-            <span style={s.logo}>🔒 Masqo</span>
+          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={s.logoMark}>M</div>
+            <span style={s.logo}>Masqo</span>
           </Link>
           <span style={s.tagline}>Local secret redaction — nothing leaves your browser</span>
           <nav style={s.nav}>
@@ -34,16 +35,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 const s: Record<string, React.CSSProperties> = {
-  page: { display: 'flex', flexDirection: 'column', minHeight: '100vh', fontFamily: 'system-ui, sans-serif' },
-  header: { background: '#1e293b', color: '#fff', padding: '12px 24px' },
-  headerInner: { maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 16 },
-  logo: { fontWeight: 700, fontSize: 18, color: '#fff' },
-  tagline: { fontSize: 12, color: '#94a3b8' },
-  nav: { marginLeft: 'auto', display: 'flex', gap: 20, alignItems: 'center' },
-  navLink: { fontSize: 13, color: '#94a3b8', textDecoration: 'none' },
-  navCta: { fontSize: 13, color: '#fff', textDecoration: 'none', background: '#6366f1', padding: '6px 14px', borderRadius: 6, fontWeight: 600 },
+  page: { display: 'flex', flexDirection: 'column', minHeight: '100vh', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif', background: '#F8FAFC' },
+  header: { background: '#0F172A', color: '#fff', padding: '0 24px', borderBottom: '1px solid #1E293B' },
+  headerInner: { maxWidth: 900, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 14, height: 56 },
+  logoMark: { width: 28, height: 28, borderRadius: 6, background: '#E11D48', color: '#fff', fontWeight: 800, fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'center', letterSpacing: '-0.5px' },
+  logo: { fontWeight: 700, fontSize: 17, color: '#F8FAFC', letterSpacing: '-0.3px' },
+  tagline: { fontSize: 12, color: '#475569' },
+  nav: { marginLeft: 'auto', display: 'flex', gap: 24, alignItems: 'center' },
+  navLink: { fontSize: 13, color: '#94A3B8', textDecoration: 'none' },
+  navCta: { fontSize: 13, color: '#fff', textDecoration: 'none', background: '#E11D48', padding: '6px 14px', borderRadius: 6, fontWeight: 600 },
   main: { flex: 1, maxWidth: 900, margin: '0 auto', width: '100%', padding: '48px 24px' },
-  footer: { background: '#f8fafc', borderTop: '1px solid #e2e8f0', padding: '20px 24px' },
-  footerInner: { maxWidth: 900, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 12, color: '#94a3b8' },
-  footerLink: { color: '#94a3b8', textDecoration: 'none' },
+  footer: { background: '#fff', borderTop: '1px solid #E2E8F0', padding: '20px 24px' },
+  footerInner: { maxWidth: 900, margin: '0 auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: 12, color: '#94A3B8' },
+  footerLink: { color: '#94A3B8', textDecoration: 'none' },
 }
