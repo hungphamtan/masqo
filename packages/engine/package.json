@@ -19,7 +19,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@masqo/shared": "file:../shared"
+    "@masqo/shared": "file:../shared",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "typescript": "^5.3.3",
