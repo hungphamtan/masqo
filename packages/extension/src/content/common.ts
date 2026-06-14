@@ -110,6 +110,9 @@ export function injectSidebar(
   // Named handler so it can be removed after use — prevents listener accumulation
   // across multiple paste events
   const msgHandler = (event: MessageEvent) => {
+    // Sidebar (chrome-extension://) posts to window.parent (host page context).
+    // event.origin here is the extension origin — validate it.
+    // If origin doesn't match the extension, ignore.
     if (event.origin !== extensionOrigin) return
     if (event.data?.type === 'MASQO_ACCEPT') {
       container.remove()

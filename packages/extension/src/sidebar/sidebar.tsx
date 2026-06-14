@@ -47,13 +47,14 @@ function Sidebar() {
     for (const d of sorted) {
       out = out.slice(0, d.position.start) + `[REDACTED:${d.type}]` + out.slice(d.position.end)
     }
-    const extensionOrigin = chrome.runtime.getURL('').slice(0, -1)
-    window.parent.postMessage({ type: 'MASQO_ACCEPT', text: out }, extensionOrigin)
+    // '*' target: window.parent is the host page (e.g. claude.ai), not the
+    // extension. The content script's handler is removed after first message
+    // so the exposure window is minimal.
+    window.parent.postMessage({ type: 'MASQO_ACCEPT', text: out }, '*')
   }
 
   const reject = () => {
-    const extensionOrigin = chrome.runtime.getURL('').slice(0, -1)
-    window.parent.postMessage({ type: 'MASQO_REJECT' }, extensionOrigin)
+    window.parent.postMessage({ type: 'MASQO_REJECT' }, '*')
   }
 
   if (!data) {
