@@ -1,5 +1,8 @@
 import type { Detector } from '../types.js'
 import { detectAwsSecrets } from './secrets/aws.js'
+import { detectGcpSecrets } from './secrets/gcp.js'
+import { detectGithubSecrets } from './secrets/github.js'
+import { detectStripeSecrets } from './secrets/stripe.js'
 
 interface Registry {
   register(name: string, detector: Detector): void
@@ -15,10 +18,10 @@ export function createRegistry(options: CreateRegistryOptions = {}): Registry {
   const detectors = new Map<string, Detector>()
 
   if (options.builtins) {
-    detectors.set('aws', {
-      name: 'aws',
-      detect: detectAwsSecrets,
-    })
+    detectors.set('aws', { name: 'aws', detect: detectAwsSecrets })
+    detectors.set('gcp', { name: 'gcp', detect: detectGcpSecrets })
+    detectors.set('github', { name: 'github', detect: detectGithubSecrets })
+    detectors.set('stripe', { name: 'stripe', detect: detectStripeSecrets })
   }
 
   return {
