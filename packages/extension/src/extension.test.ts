@@ -56,6 +56,36 @@ describe('Storage', () => {
     const s = await getSettings()
     expect(s.detectionHistory).toHaveLength(0)
   })
+
+  it('getSites returns all built-in sites by default', async () => {
+    const { getSites } = await import('./storage/index.js')
+    const sites = await getSites()
+    expect(sites.length).toBeGreaterThanOrEqual(10)
+    expect(sites.some((s) => s.id === 'claude')).toBe(true)
+    expect(sites.some((s) => s.id === 'grok')).toBe(true)
+  })
+
+  it('toggleSiteEnabled disables a site', async () => {
+    const { getSites, toggleSiteEnabled } = await import('./storage/index.js')
+    await toggleSiteEnabled('claude', false)
+    const sites = await getSites()
+    expect(sites.some((s) => s.id === 'claude')).toBe(false)
+  })
+
+  it('addCustomSite appears in getSites', async () => {
+    const { getSites, addCustomSite } = await import('./storage/index.js')
+    await addCustomSite({ id: 'test-site', name: 'Test', hostname: 'test.com', textareaSelector: 'textarea', builtIn: false })
+    const sites = await getSites()
+    expect(sites.some((s) => s.id === 'test-site')).toBe(true)
+  })
+
+  it('removeCustomSite removes it from getSites', async () => {
+    const { getSites, addCustomSite, removeCustomSite } = await import('./storage/index.js')
+    await addCustomSite({ id: 'temp-site', name: 'Temp', hostname: 'temp.com', textareaSelector: 'textarea', builtIn: false })
+    await removeCustomSite('temp-site')
+    const sites = await getSites()
+    expect(sites.some((s) => s.id === 'temp-site')).toBe(false)
+  })
 })
 
 // ── Types / contracts ─────────────────────────────────────────────────────────
@@ -71,6 +101,8 @@ describe('Message types', () => {
     const { DEFAULT_SETTINGS } = await import('./types.js')
     expect(DEFAULT_SETTINGS.policy).toBe('general')
     expect(Array.isArray(DEFAULT_SETTINGS.detectionHistory)).toBe(true)
+    expect(Array.isArray(DEFAULT_SETTINGS.disabledSiteIds)).toBe(true)
+    expect(Array.isArray(DEFAULT_SETTINGS.customSites)).toBe(true)
   })
 })
 
@@ -87,11 +119,11 @@ describe('Manifest', () => {
     expect(manifest.name).toBeDefined()
     expect(manifest.background?.service_worker).toBeDefined()
     expect(Array.isArray(manifest.content_scripts)).toBe(true)
-    expect(manifest.content_scripts.length).toBeGreaterThanOrEqual(3)
+    expect(manifest.content_scripts.length).toBeGreaterThanOrEqual(1)
     expect(manifest.permissions).toContain('storage')
   })
 
-  it('manifest covers all 3 AI chat sites', async () => {
+  it('manifest uses <all_urls> for broad site support', async () => {
     const { readFileSync } = await import('fs')
     const { resolve } = await import('path')
     const manifest = JSON.parse(
@@ -100,8 +132,6 @@ describe('Manifest', () => {
     const allMatches = manifest.content_scripts
       .flatMap((cs: { matches: string[] }) => cs.matches)
       .join(' ')
-    expect(allMatches).toContain('openai.com')
-    expect(allMatches).toContain('claude.ai')
-    expect(allMatches).toContain('gemini.google.com')
+    expect(allMatches).toContain('<all_urls>')
   })
 })

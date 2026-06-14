@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "vite build && CONTENT_ENTRY=chatgpt vite build --config vite.content.config.mts && CONTENT_ENTRY=claude vite build --config vite.content.config.mts && CONTENT_ENTRY=gemini vite build --config vite.content.config.mts",
+    "build": "vite build && node --experimental-strip-types build-content-scripts.mts",
     "dev": "vite build --watch",
     "test": "vitest run",
     "test:watch": "vitest",

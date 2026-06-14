@@ -1,4 +1,5 @@
 import type { Detection } from '@masqo/shared'
+import type { SiteConfig } from './sites.js'
 
 export interface ScanRequest {
   type: 'SCAN'
@@ -28,9 +29,13 @@ export interface StoredSettings {
     site: string
     timestamp: number
   }>
+  disabledSiteIds: string[]
+  customSites: SiteConfig[]
 }
 
 export const DEFAULT_SETTINGS: StoredSettings = {
   policy: 'general',
   detectionHistory: [],
+  disabledSiteIds: [],
+  customSites: [],
 }

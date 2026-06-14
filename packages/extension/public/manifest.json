@@ -12,10 +12,7 @@
     "tabs"
   ],
   "host_permissions": [
-    "https://chat.openai.com/*",
-    "https://chatgpt.com/*",
-    "https://claude.ai/*",
-    "https://gemini.google.com/*"
+    "<all_urls>"
   ],
   "background": {
     "service_worker": "background.js",
@@ -23,18 +20,8 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://chat.openai.com/*", "https://chatgpt.com/*"],
-      "js": ["content_chatgpt.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://claude.ai/*"],
-      "js": ["content_claude.js"],
-      "run_at": "document_idle"
-    },
-    {
-      "matches": ["https://gemini.google.com/*"],
-      "js": ["content_gemini.js"],
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
       "run_at": "document_idle"
     }
   ],
@@ -45,12 +32,7 @@
   "web_accessible_resources": [
     {
       "resources": ["src/sidebar/index.html", "assets/*", "chunks/*"],
-      "matches": [
-        "https://chat.openai.com/*",
-        "https://chatgpt.com/*",
-        "https://claude.ai/*",
-        "https://gemini.google.com/*"
-      ]
+      "matches": ["<all_urls>"]
     }
   ],
   "icons": {
