@@ -8,7 +8,8 @@
     "clipboardRead",
     "clipboardWrite",
     "activeTab",
-    "scripting"
+    "scripting",
+    "tabs"
   ],
   "host_permissions": [
     "https://chat.openai.com/*",
@@ -38,12 +39,12 @@
     }
   ],
   "action": {
-    "default_popup": "popup/index.html",
+    "default_popup": "src/popup/index.html",
     "default_title": "Masqo"
   },
   "web_accessible_resources": [
     {
-      "resources": ["sidebar/index.html", "assets/*", "chunks/*"],
+      "resources": ["src/sidebar/index.html", "assets/*", "chunks/*"],
       "matches": [
         "https://chat.openai.com/*",
         "https://chatgpt.com/*",

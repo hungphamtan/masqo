@@ -5,12 +5,26 @@ import type { StoredSettings } from '../types.js'
 
 const PRESETS = ['general', 'developer']
 
+const SUPPORTED_HOSTS = [
+  'chat.openai.com',
+  'chatgpt.com',
+  'claude.ai',
+  'gemini.google.com',
+]
+
 function Popup() {
   const [settings, setSettings] = useState<StoredSettings | null>(null)
   const [saved, setSaved] = useState(false)
+  const [activeHost, setActiveHost] = useState<string | null>(null)
 
   useEffect(() => {
     getSettings().then(setSettings)
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      const url = tabs[0]?.url
+      if (url) {
+        try { setActiveHost(new URL(url).hostname) } catch { /* ignore */ }
+      }
+    })
   }, [])
 
   const handlePolicyChange = async (policy: string) => {
@@ -29,12 +43,22 @@ function Popup() {
     return <div style={styles.loading}>Loading…</div>
   }
 
+  const isSupported = activeHost ? SUPPORTED_HOSTS.some(h => activeHost === h || activeHost.endsWith('.' + h)) : true
+
   return (
     <div style={styles.container}>
       <div style={styles.header}>
         <span style={styles.logo}>🔒 Masqo</span>
         {saved && <span style={styles.saved}>Saved ✓</span>}
       </div>
+
+      {!isSupported && activeHost && (
+        <div style={styles.notice}>
+          <strong>Not active here.</strong> Masqo intercepts pastes on ChatGPT, Claude, and Gemini only.
+          <br />
+          <span style={{ color: '#6b7280' }}>Current site: {activeHost}</span>
+        </div>
+      )}
 
       <div style={styles.section}>
         <label style={styles.label}>Active policy</label>
@@ -90,6 +114,7 @@ const styles: Record<string, React.CSSProperties> = {
   historyMeta: { color: '#9ca3af', fontSize: 11 },
   clearBtn: { fontSize: 11, color: '#6b7280', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' },
   loading: { padding: 16, color: '#6b7280', fontSize: 13 },
+  notice: { background: '#fef9c3', border: '1px solid #fde047', borderRadius: 6, padding: '10px 12px', marginBottom: 12, fontSize: 12, lineHeight: 1.5, color: '#713f12' },
 }
 
 const root = createRoot(document.getElementById('root')!)

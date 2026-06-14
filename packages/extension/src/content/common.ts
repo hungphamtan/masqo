@@ -27,16 +27,31 @@ export function interceptPaste(
   onDetection: (original: string, result: ScanResponse) => void
 ): void {
   document.addEventListener('paste', async (event: ClipboardEvent) => {
-    const target = event.target as HTMLElement
-    if (!target.matches(config.textareaSelector) && !target.closest(config.textareaSelector)) {
-      return
-    }
-
     const text = event.clipboardData?.getData('text/plain')
     if (!text?.trim()) return
 
+    // Only intercept if paste target is inside (or is) an editable area.
+    // Fall back to accepting any paste when target check is ambiguous.
+    const target = event.target as HTMLElement
+    const inEditable =
+      target.matches(config.textareaSelector) ||
+      !!target.closest(config.textareaSelector) ||
+      target.isContentEditable ||
+      !!(target as HTMLElement).closest('[contenteditable="true"]')
+
+    if (!inEditable) {
+      console.debug('[Masqo] paste outside editable, skipping', target)
+      return
+    }
+
+    console.debug('[Masqo] paste intercepted on', config.name, '— scanning', text.length, 'chars')
     const result = await scanText(text)
-    if (!result || result.detections.length === 0) return
+    console.debug('[Masqo] scan result', result)
+
+    if (!result || result.detections.length === 0) {
+      console.debug('[Masqo] no detections, allowing paste')
+      return
+    }
 
     event.preventDefault()
     onDetection(text, result)
@@ -52,7 +67,7 @@ export function injectSidebar(
   // Remove existing sidebar
   document.getElementById('masqo-sidebar')?.remove()
 
-  const sidebarUrl = chrome.runtime.getURL('sidebar/index.html')
+  const sidebarUrl = chrome.runtime.getURL('src/sidebar/index.html')
 
   const container = document.createElement('div')
   container.id = 'masqo-sidebar'

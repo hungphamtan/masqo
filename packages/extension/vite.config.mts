@@ -1,13 +1,16 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { resolve } from 'path'
-import { copyFileSync, mkdirSync } from 'fs'
+import { copyFileSync, mkdirSync, readdirSync } from 'fs'
 
 const copyManifestPlugin = {
   name: 'copy-manifest',
   closeBundle() {
-    mkdirSync('dist', { recursive: true })
+    mkdirSync('dist/icons', { recursive: true })
     copyFileSync('public/manifest.json', 'dist/manifest.json')
+    for (const file of readdirSync('public/icons')) {
+      copyFileSync(`public/icons/${file}`, `dist/icons/${file}`)
+    }
   },
 }
 
@@ -19,13 +22,11 @@ export default defineConfig({
     rollupOptions: {
       input: {
         background: resolve(__dirname, 'src/background/index.ts'),
-        content_chatgpt: resolve(__dirname, 'src/content/chatgpt.ts'),
-        content_claude: resolve(__dirname, 'src/content/claude.ts'),
-        content_gemini: resolve(__dirname, 'src/content/gemini.ts'),
         sidebar: resolve(__dirname, 'src/sidebar/index.html'),
         popup: resolve(__dirname, 'src/popup/index.html'),
       },
       output: {
+        format: 'es',
         entryFileNames: '[name].js',
         chunkFileNames: 'chunks/[name]-[hash].js',
         assetFileNames: 'assets/[name]-[hash][extname]',
@@ -38,7 +39,6 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      // Polyfill Node crypto for browser — use globalThis.crypto
       crypto: 'node:crypto',
     },
   },
