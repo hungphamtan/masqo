@@ -54,7 +54,7 @@ describe('install-hook command (Task 6.1)', () => {
     run(['install-hook', 'claude-code'])
     const settingsPath = resolve(TEST_CLAUDE_DIR, 'settings.json')
     const content = readFileSync(settingsPath, 'utf8')
-    const occurrences = (content.match(/masqo redact --hook/g) ?? []).length
+    const occurrences = (content.match(/masqo redact --claude-hook/g) ?? []).length
     expect(occurrences).toBe(1)
   })
 

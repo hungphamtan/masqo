@@ -21,7 +21,13 @@ interface RedactOptions {
   format: string
   output?: string
   hook: boolean
+  claudeHook: boolean
   noColor: boolean
+}
+
+interface ClaudeHookInput {
+  tool_name?: string
+  tool_input?: { content?: string; file_path?: string; new_string?: string }
 }
 
 export const redactCommand = new Command('redact')
@@ -32,10 +38,52 @@ export const redactCommand = new Command('redact')
   .option('-f, --format <format>', 'Output format: text|json', 'text')
   .option('-o, --output <file>', 'Write output to file instead of stdout')
   .option('--hook', 'Hook mode: non-interactive, JSON output, exit code signals detections')
+  .option('--claude-hook', 'Claude Code hook mode: reads JSON from stdin, scans tool_input.content')
   .option('--no-color', 'Disable colored output')
   .action(async (file: string | undefined, opts: RedactOptions) => {
     const isHook = opts.hook
-    const noColor = opts.noColor || isHook || !process.stderr.isTTY
+    const isClaudeHook = opts.claudeHook
+    const noColor = opts.noColor || isHook || isClaudeHook || !process.stderr.isTTY
+
+    // Claude Code hook: stdin is JSON with tool_input.content
+    if (isClaudeHook) {
+      const raw = await readStdin()
+      let hookInput: ClaudeHookInput = {}
+      try { hookInput = JSON.parse(raw) as ClaudeHookInput } catch { /* not JSON, ignore */ }
+
+      const content =
+        hookInput.tool_input?.content ??
+        hookInput.tool_input?.new_string ??
+        ''
+
+      if (!content.trim()) {
+        // Nothing to scan — let Claude proceed
+        process.stdout.write(JSON.stringify({ continue: true }) + '\n')
+        process.exit(0)
+      }
+
+      const mode = MODES[opts.mode] ?? ReplacementMode.Redact
+      const engine = createEngine()
+      const result = engine.scan(content, {
+        mode,
+        ...(opts.policy ? { presetName: opts.policy } : {}),
+      })
+
+      if (result.detections.length === 0) {
+        process.stdout.write(JSON.stringify({ continue: true }) + '\n')
+        process.exit(0)
+      }
+
+      const summary = result.detections
+        .map((d) => `${d.type} (${Math.round(d.confidence * 100)}%)`)
+        .join(', ')
+
+      process.stdout.write(JSON.stringify({
+        continue: false,
+        stopReason: `Masqo detected secrets in file content: ${summary}. Review and redact before proceeding.`,
+      }) + '\n')
+      process.exit(0)
+    }
 
     const input = await (async () => {
       try {

@@ -4,7 +4,7 @@ import { resolve } from 'path'
 import { homedir } from 'os'
 
 const SUPPORTED_TARGETS = ['claude-code']
-const HOOK_COMMAND = 'masqo redact --hook'
+const HOOK_COMMAND = 'masqo redact --claude-hook'
 
 function claudeDir(): string {
   return process.env['MASQO_CLAUDE_DIR'] ?? resolve(homedir(), '.claude')
@@ -62,7 +62,7 @@ export const installHookCommand = new Command('install-hook')
       hooks: [
         {
           type: 'command',
-          command: `${HOOK_COMMAND} < "$CLAUDE_FILE_PATH"`,
+          command: HOOK_COMMAND,
         },
       ],
     })
