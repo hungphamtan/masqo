@@ -1,12 +1,21 @@
 import type { Detection } from '@masqo/shared'
-import { createHash } from 'crypto'
 
 const tokenMap = new Map<string, string>()
 const reverseMap = new Map<string, string>()
 
+// FNV-1a 32-bit — fast, browser-compatible, no Node crypto dependency
+function fnv1a(str: string): string {
+  let h = 0x811c9dc5
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i)
+    h = (h * 0x01000193) >>> 0
+  }
+  return h.toString(16).padStart(8, '0')
+}
+
 function makeToken(value: string): string {
-  const hash = createHash('sha256').update(value).digest('hex').slice(0, 12)
-  return `TOKEN_${hash}`
+  // Two passes for 16 hex chars of entropy
+  return `TOKEN_${fnv1a(value)}${fnv1a(value + '\x00')}`
 }
 
 export function tokenize(input: string, detections: Detection[]): string {
