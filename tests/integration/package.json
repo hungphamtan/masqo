@@ -1,0 +1,17 @@
+{
+  "name": "@masqo/integration-tests",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@masqo/engine": "file:../../packages/engine",
+    "@masqo/shared": "file:../../packages/shared"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.1"
+  }
+}
