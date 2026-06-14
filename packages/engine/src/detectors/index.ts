@@ -3,6 +3,9 @@ import { detectAwsSecrets } from './secrets/aws.js'
 import { detectGcpSecrets } from './secrets/gcp.js'
 import { detectGithubSecrets } from './secrets/github.js'
 import { detectStripeSecrets } from './secrets/stripe.js'
+import { detectJwt } from './secrets/jwt.js'
+import { detectBearerTokens } from './secrets/bearer.js'
+import { detectCookies } from './secrets/cookies.js'
 
 interface Registry {
   register(name: string, detector: Detector): void
@@ -22,6 +25,9 @@ export function createRegistry(options: CreateRegistryOptions = {}): Registry {
     detectors.set('gcp', { name: 'gcp', detect: detectGcpSecrets })
     detectors.set('github', { name: 'github', detect: detectGithubSecrets })
     detectors.set('stripe', { name: 'stripe', detect: detectStripeSecrets })
+    detectors.set('jwt', { name: 'jwt', detect: detectJwt })
+    detectors.set('bearer', { name: 'bearer', detect: detectBearerTokens })
+    detectors.set('cookies', { name: 'cookies', detect: detectCookies })
   }
 
   return {
