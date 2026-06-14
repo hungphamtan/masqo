@@ -2,7 +2,9 @@ import { Command } from 'commander'
 import { createEngine } from '@masqo/engine'
 import { ReplacementMode } from '@masqo/shared'
 import { readStdin } from '../lib/stdin.js'
-import { readFile, writeFile } from 'fs/promises'
+import { printSummary } from '../lib/output.js'
+import { readFile, writeFile, stat } from 'fs/promises'
+import ora from 'ora'
 
 const MODES: Record<string, ReplacementMode> = {
   redact: ReplacementMode.Redact,
@@ -11,12 +13,15 @@ const MODES: Record<string, ReplacementMode> = {
   warn: ReplacementMode.Warn,
 }
 
+const LARGE_FILE_BYTES = 1024 * 1024 // 1MB
+
 interface RedactOptions {
   mode: string
   policy?: string
   format: string
   output?: string
   hook: boolean
+  noColor: boolean
 }
 
 export const redactCommand = new Command('redact')
@@ -27,7 +32,11 @@ export const redactCommand = new Command('redact')
   .option('-f, --format <format>', 'Output format: text|json', 'text')
   .option('-o, --output <file>', 'Write output to file instead of stdout')
   .option('--hook', 'Hook mode: non-interactive, JSON output, exit code signals detections')
+  .option('--no-color', 'Disable colored output')
   .action(async (file: string | undefined, opts: RedactOptions) => {
+    const isHook = opts.hook
+    const noColor = opts.noColor || isHook || !process.stderr.isTTY
+
     const input = await (async () => {
       try {
         return file ? await readFile(file, 'utf8') : await readStdin()
@@ -38,6 +47,15 @@ export const redactCommand = new Command('redact')
       }
     })()
 
+    // Show spinner for large files
+    let spinner: ReturnType<typeof ora> | null = null
+    if (file && !isHook && process.stderr.isTTY) {
+      const fileSize = await stat(file).then((s) => s.size).catch(() => 0)
+      if (fileSize >= LARGE_FILE_BYTES) {
+        spinner = ora({ text: `Scanning ${file}...`, stream: process.stderr }).start()
+      }
+    }
+
     const mode = MODES[opts.mode] ?? ReplacementMode.Redact
     const engine = createEngine()
 
@@ -46,7 +64,8 @@ export const redactCommand = new Command('redact')
       ...(opts.policy ? { presetName: opts.policy } : {}),
     })
 
-    const isHook = opts.hook
+    spinner?.succeed(`Scanned — ${result.detections.length} detection(s)`)
+
     const isJson = isHook || opts.format === 'json'
 
     if (isJson) {
@@ -71,10 +90,12 @@ export const redactCommand = new Command('redact')
     }
 
     // text mode
-    if (result.mode === ReplacementMode.Warn && result.detections.length > 0) {
+    if (result.mode === ReplacementMode.Warn) {
       process.stderr.write(
         `warning: ${result.detections.length} secret(s) detected but not redacted (warn mode)\n`
       )
+    } else if (!isHook) {
+      printSummary(result.detections, noColor)
     }
 
     const out = result.output.endsWith('\n') ? result.output : result.output + '\n'
