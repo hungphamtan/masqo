@@ -27,7 +27,12 @@ interface RedactOptions {
 
 interface ClaudeHookInput {
   tool_name?: string
-  tool_input?: { content?: string; file_path?: string; new_string?: string }
+  tool_input?: {
+    content?: string
+    file_path?: string
+    new_string?: string
+    edits?: Array<{ old_string?: string; new_string?: string }>
+  }
 }
 
 export const redactCommand = new Command('redact')
@@ -45,15 +50,24 @@ export const redactCommand = new Command('redact')
     const isClaudeHook = opts.claudeHook
     const noColor = opts.noColor || isHook || isClaudeHook || !process.stderr.isTTY
 
-    // Claude Code hook: stdin is JSON with tool_input.content
+    // Claude Code hook: stdin is JSON with tool_input.content/new_string/edits
     if (isClaudeHook) {
       const raw = await readStdin()
+
+      // Guard against enormous payloads before parsing
+      if (raw.length > 10 * 1024 * 1024) {
+        process.stdout.write(JSON.stringify({ continue: true }) + '\n')
+        process.exit(0)
+      }
+
       let hookInput: ClaudeHookInput = {}
       try { hookInput = JSON.parse(raw) as ClaudeHookInput } catch { /* not JSON, ignore */ }
 
+      // Write → content, Edit → new_string, MultiEdit → edits[].new_string
       const content =
         hookInput.tool_input?.content ??
         hookInput.tool_input?.new_string ??
+        hookInput.tool_input?.edits?.map((e) => e.new_string ?? '').join('\n') ??
         ''
 
       if (!content.trim()) {

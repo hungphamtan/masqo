@@ -80,3 +80,63 @@ describe('redact command — stdin (Task 4.2)', () => {
     expect(parsed.detections).toHaveLength(0)
   })
 })
+
+describe('redact --claude-hook mode', () => {
+  const jwt = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyIn0.sig'
+
+  it('Write tool with secret → continue:false', () => {
+    const input = JSON.stringify({ tool_name: 'Write', tool_input: { content: `token: ${jwt}` } })
+    const r = pipe(input, 'redact --claude-hook')
+    expect(r.code).toBe(0)
+    const out = JSON.parse(r.stdout)
+    expect(out.continue).toBe(false)
+    expect(out.stopReason).toMatch(/jwt/)
+  })
+
+  it('Edit tool with secret in new_string → continue:false', () => {
+    const input = JSON.stringify({ tool_name: 'Edit', tool_input: { new_string: `token: ${jwt}` } })
+    const r = pipe(input, 'redact --claude-hook')
+    expect(r.code).toBe(0)
+    const out = JSON.parse(r.stdout)
+    expect(out.continue).toBe(false)
+  })
+
+  it('MultiEdit tool with secret in edits[].new_string → continue:false', () => {
+    const input = JSON.stringify({
+      tool_name: 'MultiEdit',
+      tool_input: { edits: [{ old_string: 'x', new_string: `token: ${jwt}` }] },
+    })
+    const r = pipe(input, 'redact --claude-hook')
+    expect(r.code).toBe(0)
+    const out = JSON.parse(r.stdout)
+    expect(out.continue).toBe(false)
+  })
+
+  it('clean content → continue:true', () => {
+    const input = JSON.stringify({ tool_name: 'Write', tool_input: { content: 'hello world' } })
+    const r = pipe(input, 'redact --claude-hook')
+    expect(r.code).toBe(0)
+    const out = JSON.parse(r.stdout)
+    expect(out.continue).toBe(true)
+  })
+
+  it('empty/whitespace content → continue:true', () => {
+    const input = JSON.stringify({ tool_name: 'Write', tool_input: { content: '   ' } })
+    const r = pipe(input, 'redact --claude-hook')
+    expect(r.code).toBe(0)
+    expect(JSON.parse(r.stdout).continue).toBe(true)
+  })
+
+  it('malformed JSON → continue:true (fail open)', () => {
+    const r = pipe('not json at all', 'redact --claude-hook')
+    expect(r.code).toBe(0)
+    expect(JSON.parse(r.stdout).continue).toBe(true)
+  })
+
+  it('missing tool_input → continue:true', () => {
+    const input = JSON.stringify({ tool_name: 'Bash' })
+    const r = pipe(input, 'redact --claude-hook')
+    expect(r.code).toBe(0)
+    expect(JSON.parse(r.stdout).continue).toBe(true)
+  })
+})
