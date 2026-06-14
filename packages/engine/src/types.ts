@@ -1,4 +1,5 @@
 import type { Detection, ReplacementMode } from '@masqo/shared'
+import type { Policy } from './policies/parser.js'
 
 /**
  * Detector interface - detects sensitive patterns in text
@@ -55,6 +56,16 @@ export interface EngineConfig {
    * Minimum confidence threshold (0.0 to 1.0)
    */
   minConfidence?: number
+
+  /**
+   * Policy object — overrides mode, filters detectors, applies custom rules
+   */
+  policy?: Policy
+
+  /**
+   * Load a named preset policy (e.g. 'developer', 'general')
+   */
+  presetName?: string
 }
 
 /**
