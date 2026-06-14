@@ -1,4 +1,5 @@
-import React, { useState, useCallback, useRef } from 'react'
+import React, { useState, useCallback, useRef, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { createEngine } from '@masqo/engine'
 import { ReplacementMode } from '@masqo/shared'
 import type { Detection } from '@masqo/shared'
@@ -30,11 +31,13 @@ export function App() {
   const [mode, setMode] = useState<Mode>('redact')
   const [policy, setPolicy] = useState<Policy>('none')
   const [scanned, setScanned] = useState(false)
+  const [autoScan, setAutoScan] = useState(true)
   const fileRef = useRef<HTMLInputElement>(null)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  const scan = useCallback(() => {
-    if (!input.trim()) return
-    const result = engine.scan(input, {
+  const scan = useCallback((text = input) => {
+    if (!text.trim()) return
+    const result = engine.scan(text, {
       mode: REPLACEMENT_MODES[mode],
       ...(policy !== 'none' ? { presetName: policy } : {}),
     })
@@ -43,6 +46,14 @@ export function App() {
     setAccepted(new Set(result.detections.map((_, i) => i)))
     setScanned(true)
   }, [input, mode, policy])
+
+  // Auto-scan with 400ms debounce after paste/input
+  useEffect(() => {
+    if (!autoScan || !input.trim()) return
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+    debounceRef.current = setTimeout(() => scan(input), 400)
+    return () => { if (debounceRef.current) clearTimeout(debounceRef.current) }
+  }, [input, autoScan, scan])
 
   const toggle = (i: number) => {
     setAccepted((prev) => {
@@ -77,16 +88,19 @@ export function App() {
     navigator.clipboard.writeText(finalOutput).catch(() => {})
   }
 
+  const loadText = (text: string) => {
+    setInput(text)
+    setScanned(false)
+    setDetections([])
+    if (autoScan) setTimeout(() => scan(text), 0)
+  }
+
   const handleFileDrop = (e: React.DragEvent) => {
     e.preventDefault()
     const file = e.dataTransfer.files[0]
     if (!file) return
     const reader = new FileReader()
-    reader.onload = (ev) => {
-      setInput(ev.target?.result as string ?? '')
-      setScanned(false)
-      setDetections([])
-    }
+    reader.onload = (ev) => loadText(ev.target?.result as string ?? '')
     reader.readAsText(file)
   }
 
@@ -94,11 +108,7 @@ export function App() {
     const file = e.target.files?.[0]
     if (!file) return
     const reader = new FileReader()
-    reader.onload = (ev) => {
-      setInput(ev.target?.result as string ?? '')
-      setScanned(false)
-      setDetections([])
-    }
+    reader.onload = (ev) => loadText(ev.target?.result as string ?? '')
     reader.readAsText(file)
   }
 
@@ -115,8 +125,15 @@ export function App() {
       {/* Header */}
       <header style={s.header}>
         <div style={s.headerInner}>
-          <span style={s.logo}>🔒 Masqo</span>
+          <Link to="/" style={{ textDecoration: 'none' }}>
+            <span style={s.logo}>🔒 Masqo</span>
+          </Link>
           <span style={s.tagline}>Local secret redaction — nothing leaves your browser</span>
+          <nav style={s.nav}>
+            <Link to="/how-it-works" style={s.navLink}>How it works</Link>
+            <Link to="/privacy" style={s.navLink}>Privacy</Link>
+            <Link to="/terms" style={s.navLink}>Terms</Link>
+          </nav>
         </div>
       </header>
 
@@ -142,13 +159,25 @@ export function App() {
           </button>
           <input ref={fileRef} type="file" accept="text/*" style={{ display: 'none' }} onChange={handleFileInput} />
 
-          <button
-            onClick={scan}
-            disabled={!input.trim()}
-            style={{ ...s.btnPrimary, marginLeft: 'auto' }}
-          >
-            Scan →
-          </button>
+          <label style={{ ...s.controlLabel, display: 'flex', alignItems: 'center', gap: 6, cursor: 'pointer', marginLeft: 'auto' }}>
+            <input
+              type="checkbox"
+              checked={autoScan}
+              onChange={(e) => setAutoScan(e.target.checked)}
+              style={{ cursor: 'pointer' }}
+            />
+            Auto-scan
+          </label>
+
+          {!autoScan && (
+            <button
+              onClick={() => scan()}
+              disabled={!input.trim()}
+              style={s.btnPrimary}
+            >
+              Scan →
+            </button>
+          )}
 
           {scanned && (
             <button onClick={clear} style={s.btnSecondary}>Clear</button>
@@ -264,8 +293,10 @@ const s: Record<string, React.CSSProperties> = {
   page: { display: 'flex', flexDirection: 'column', minHeight: '100vh' },
   header: { background: '#1e293b', color: '#fff', padding: '12px 24px' },
   headerInner: { maxWidth: 1100, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 16 },
-  logo: { fontWeight: 700, fontSize: 18 },
+  logo: { fontWeight: 700, fontSize: 18, color: '#fff' },
   tagline: { fontSize: 12, color: '#94a3b8' },
+  nav: { marginLeft: 'auto', display: 'flex', gap: 20 },
+  navLink: { fontSize: 12, color: '#94a3b8', textDecoration: 'none' },
   main: { flex: 1, maxWidth: 1100, margin: '0 auto', width: '100%', padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 16 },
   controls: { display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' },
   controlLabel: { fontSize: 12, fontWeight: 600, color: '#64748b', whiteSpace: 'nowrap' },
