@@ -6,6 +6,7 @@ import { detectStripeSecrets } from './secrets/stripe.js'
 import { detectJwt } from './secrets/jwt.js'
 import { detectBearerTokens } from './secrets/bearer.js'
 import { detectCookies } from './secrets/cookies.js'
+import { detectDatabaseSecrets } from './secrets/database.js'
 
 interface Registry {
   register(name: string, detector: Detector): void
@@ -28,6 +29,7 @@ export function createRegistry(options: CreateRegistryOptions = {}): Registry {
     detectors.set('jwt', { name: 'jwt', detect: detectJwt })
     detectors.set('bearer', { name: 'bearer', detect: detectBearerTokens })
     detectors.set('cookies', { name: 'cookies', detect: detectCookies })
+    detectors.set('database', { name: 'database', detect: detectDatabaseSecrets })
   }
 
   return {
