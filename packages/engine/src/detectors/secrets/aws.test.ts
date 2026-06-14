@@ -47,13 +47,10 @@ describe('AWS Secret Detector', () => {
   })
 
   describe('AWS Secret Access Key', () => {
-    it('should detect valid AWS secret key', () => {
+    it('should not detect bare 40-char base64 without AWS context (too many false positives)', () => {
       const input = 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'
       const detections = detectAwsSecrets(input)
-
-      expect(detections).toHaveLength(1)
-      expect(detections[0]?.type).toBe('aws-secret-key')
-      expect(detections[0]?.confidence).toBeGreaterThan(0.8)
+      expect(detections).toHaveLength(0)
     })
 
     it('should detect AWS secret key in environment variable', () => {

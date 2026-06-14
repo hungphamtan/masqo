@@ -91,16 +91,18 @@ export function detectAwsSecrets(input: string): Detection[] {
     const line = getLineAtPosition(input, match.index)
     if (isCommentLine(line)) continue
 
-    // Higher confidence if near AWS_SECRET keyword
-    const context = input.substring(
-      Math.max(0, match.index - 50),
-      Math.min(input.length, match.index + match[0].length + 50)
-    )
-    const hasAwsContext = /AWS_SECRET|SECRET_ACCESS_KEY|aws.*secret/i.test(context)
-    const confidence = hasAwsContext ? 0.95 : 0.85
-
     // Skip if exact match length is not 40 (to reduce false positives)
     if (match[0].length !== 40) continue
+
+    // Require AWS context — bare 40-char base64 has too many false positives (JWT segments, etc.)
+    const context = input.substring(
+      Math.max(0, match.index - 100),
+      Math.min(input.length, match.index + match[0].length + 100)
+    )
+    const hasAwsContext = /AWS_SECRET|SECRET_ACCESS_KEY|aws.*secret/i.test(context)
+    if (!hasAwsContext) continue
+
+    const confidence = 0.95
 
     detections.push({
       type: 'aws-secret-key',
