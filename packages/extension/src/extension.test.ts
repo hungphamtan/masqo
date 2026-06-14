@@ -4,6 +4,8 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 const mockStorage: Record<string, unknown> = {}
 
+const mockLocalStorage: Record<string, unknown> = {}
+
 vi.stubGlobal('chrome', {
   storage: {
     sync: {
@@ -13,15 +15,24 @@ vi.stubGlobal('chrome', {
         return Promise.resolve()
       }),
     },
+    local: {
+      get: vi.fn((key: string) => Promise.resolve({ [key]: mockLocalStorage[key] })),
+      set: vi.fn((obj: Record<string, unknown>) => {
+        Object.assign(mockLocalStorage, obj)
+        return Promise.resolve()
+      }),
+    },
   },
   runtime: {
     sendMessage: vi.fn(),
     lastError: null,
+    getURL: vi.fn((path: string) => `chrome-extension://test-id/${path}`),
   },
 })
 
 beforeEach(() => {
   Object.keys(mockStorage).forEach((k) => delete mockStorage[k])
+  Object.keys(mockLocalStorage).forEach((k) => delete mockLocalStorage[k])
   vi.clearAllMocks()
 })
 
@@ -86,6 +97,37 @@ describe('Storage', () => {
     const sites = await getSites()
     expect(sites.some((s) => s.id === 'temp-site')).toBe(false)
   })
+
+  it('detectionHistory stored in chrome.storage.local not sync', async () => {
+    const { addDetectionHistory } = await import('./storage/index.js')
+    await addDetectionHistory('jwt', 'claude.ai')
+    // local storage should have the entry
+    expect(mockLocalStorage['masqo_history']).toBeDefined()
+    const history = mockLocalStorage['masqo_history'] as Array<{ type: string; site: string }>
+    expect(history[0].type).toBe('jwt')
+    expect(history[0].site).toBe('claude.ai')
+    // sync storage should NOT have detectionHistory
+    const syncData = mockStorage['masqo_settings'] as Record<string, unknown> | undefined
+    expect(syncData?.['detectionHistory']).toBeUndefined()
+  })
+
+  it('filters out invalid customSites from storage on read', async () => {
+    // Inject invalid customSite directly into mock storage
+    mockStorage['masqo_settings'] = {
+      policy: 'general',
+      disabledSiteIds: [],
+      customSites: [
+        { id: 'valid', name: 'Valid', hostname: 'valid.com', textareaSelector: 'textarea', builtIn: false },
+        { id: 'bad', name: 'Bad', hostname: 'evil.com/../../../etc/passwd', textareaSelector: 'x'.repeat(501), builtIn: false },
+        'not-an-object',
+        null,
+      ],
+    }
+    const { getSettings } = await import('./storage/index.js')
+    const s = await getSettings()
+    expect(s.customSites).toHaveLength(1)
+    expect(s.customSites[0].id).toBe('valid')
+  })
 })
 
 // ── Types / contracts ─────────────────────────────────────────────────────────
@@ -121,6 +163,15 @@ describe('Manifest', () => {
     expect(Array.isArray(manifest.content_scripts)).toBe(true)
     expect(manifest.content_scripts.length).toBeGreaterThanOrEqual(1)
     expect(manifest.permissions).toContain('storage')
+  })
+
+  it('manifest.json version is not 0.0.0', async () => {
+    const { readFileSync } = await import('fs')
+    const { resolve } = await import('path')
+    const manifest = JSON.parse(
+      readFileSync(resolve(import.meta.dirname, '../public/manifest.json'), 'utf8')
+    )
+    expect(manifest.version).not.toBe('0.0.0')
   })
 
   it('manifest uses <all_urls> for broad site support', async () => {

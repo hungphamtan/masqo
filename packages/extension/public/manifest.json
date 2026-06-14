@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Masqo — Secret Redaction",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Detect and redact secrets before pasting into AI chat tools",
   "permissions": [
     "storage",
