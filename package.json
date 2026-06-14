@@ -16,7 +16,9 @@
     "build:engine": "turbo run build --filter=@masqo/engine",
     "build:cli": "turbo run build --filter=@masqo/cli",
     "build:ext": "turbo run build --filter=@masqo/extension",
-    "build:web": "turbo run build --filter=@masqo/web"
+    "build:web": "turbo run build --filter=@masqo/web",
+    "benchmark": "node benchmarks/bench.mjs",
+    "test:integration": "npm --prefix tests/integration test"
   },
   "devDependencies": {
     "@types/node": "^20.11.5",
