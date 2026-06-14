@@ -30,8 +30,6 @@ export function interceptPaste(
     const text = event.clipboardData?.getData('text/plain')
     if (!text?.trim()) return
 
-    // Only intercept if paste target is inside (or is) an editable area.
-    // Fall back to accepting any paste when target check is ambiguous.
     const target = event.target as HTMLElement
     const inEditable =
       target.matches(config.textareaSelector) ||
@@ -44,16 +42,22 @@ export function interceptPaste(
       return
     }
 
+    // Must call preventDefault synchronously — browser inserts paste text after
+    // the current task completes, so any async await before this is too late.
+    event.preventDefault()
     console.debug('[Masqo] paste intercepted on', config.name, '— scanning', text.length, 'chars')
+
     const result = await scanText(text)
     console.debug('[Masqo] scan result', result)
 
     if (!result || result.detections.length === 0) {
-      console.debug('[Masqo] no detections, allowing paste')
+      console.debug('[Masqo] no detections, reinserting original text')
+      // We already prevented the default paste, so manually reinsert
+      const active = document.activeElement as HTMLElement
+      if (active) insertTextAtCursor(active, text)
       return
     }
 
-    event.preventDefault()
     onDetection(text, result)
   }, true)
 }
@@ -64,10 +68,12 @@ export function injectSidebar(
   onAccept: (text: string) => void,
   onReject: () => void
 ): void {
-  // Remove existing sidebar
   document.getElementById('masqo-sidebar')?.remove()
 
   const sidebarUrl = chrome.runtime.getURL('src/sidebar/index.html')
+  // Use the extension's own origin to scope postMessage — prevents any page
+  // script from injecting MASQO_ACCEPT and replacing the user's paste content
+  const extensionOrigin = chrome.runtime.getURL('').slice(0, -1)
 
   const container = document.createElement('div')
   container.id = 'masqo-sidebar'
@@ -89,8 +95,10 @@ export function injectSidebar(
   container.appendChild(iframe)
   document.body.appendChild(container)
 
-  // Pass data to sidebar via postMessage once loaded
   iframe.addEventListener('load', () => {
+    // Target origin '*' is acceptable here — the iframe src is already locked
+    // to the extension URL. The security boundary that matters is the reverse:
+    // the content script only accepts MASQO_ACCEPT/REJECT from extensionOrigin.
     iframe.contentWindow?.postMessage({
       type: 'MASQO_REVIEW_DATA',
       original,
@@ -99,16 +107,21 @@ export function injectSidebar(
     }, '*')
   })
 
-  // Listen for sidebar decisions
-  window.addEventListener('message', (event) => {
+  // Named handler so it can be removed after use — prevents listener accumulation
+  // across multiple paste events
+  const msgHandler = (event: MessageEvent) => {
+    if (event.origin !== extensionOrigin) return
     if (event.data?.type === 'MASQO_ACCEPT') {
       container.remove()
+      window.removeEventListener('message', msgHandler)
       onAccept(event.data.text as string)
     } else if (event.data?.type === 'MASQO_REJECT') {
       container.remove()
+      window.removeEventListener('message', msgHandler)
       onReject()
     }
-  })
+  }
+  window.addEventListener('message', msgHandler)
 }
 
 export function insertTextAtCursor(element: HTMLElement, text: string): void {
@@ -118,7 +131,6 @@ export function insertTextAtCursor(element: HTMLElement, text: string): void {
     inputType: 'insertText',
     bubbles: true,
   })
-  // For contenteditable elements
   if (element.isContentEditable) {
     const sel = window.getSelection()
     if (sel && sel.rangeCount > 0) {
@@ -128,7 +140,6 @@ export function insertTextAtCursor(element: HTMLElement, text: string): void {
       sel.collapseToEnd()
     }
   } else {
-    // For textarea/input
     const el = element as HTMLTextAreaElement
     const start = el.selectionStart ?? 0
     const end = el.selectionEnd ?? 0

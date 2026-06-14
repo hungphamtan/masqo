@@ -13,11 +13,18 @@ function Sidebar() {
   const [accepted, setAccepted] = useState<Set<number>>(new Set())
 
   useEffect(() => {
+    const extensionOrigin = chrome.runtime.getURL('').slice(0, -1)
     const handler = (event: MessageEvent) => {
+      // MASQO_REVIEW_DATA is sent from the content script (host page origin).
+      // We cannot validate by extensionOrigin here — validate message structure.
+      // Security: the reverse path (MASQO_ACCEPT → content script) IS validated
+      // by extensionOrigin in the content script's msgHandler.
       if (event.data?.type === 'MASQO_REVIEW_DATA') {
         const d = event.data as ReviewData & { type: string }
-        setData(d)
-        setAccepted(new Set(d.detections.map((_, i) => i)))
+        if (d.original && Array.isArray(d.detections)) {
+          setData(d)
+          setAccepted(new Set(d.detections.map((_, i) => i)))
+        }
       }
     }
     window.addEventListener('message', handler)
@@ -34,19 +41,19 @@ function Sidebar() {
 
   const pasteClean = () => {
     if (!data) return
-    // Apply only accepted detections
     let out = data.original
     const toRedact = data.detections.filter((_, i) => accepted.has(i))
-    // Sort descending by position so replacements don't shift indices
     const sorted = [...toRedact].sort((a, b) => b.position.start - a.position.start)
     for (const d of sorted) {
       out = out.slice(0, d.position.start) + `[REDACTED:${d.type}]` + out.slice(d.position.end)
     }
-    window.parent.postMessage({ type: 'MASQO_ACCEPT', text: out }, '*')
+    const extensionOrigin = chrome.runtime.getURL('').slice(0, -1)
+    window.parent.postMessage({ type: 'MASQO_ACCEPT', text: out }, extensionOrigin)
   }
 
   const reject = () => {
-    window.parent.postMessage({ type: 'MASQO_REJECT' }, '*')
+    const extensionOrigin = chrome.runtime.getURL('').slice(0, -1)
+    window.parent.postMessage({ type: 'MASQO_REJECT' }, extensionOrigin)
   }
 
   if (!data) {
