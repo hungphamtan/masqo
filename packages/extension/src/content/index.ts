@@ -37,7 +37,10 @@ async function init() {
       original,
       result,
       (cleanText) => {
-        if (activeEl) insertTextAtCursor(activeEl, cleanText)
+        if (activeEl) {
+          activeEl.focus()
+          insertTextAtCursor(activeEl, cleanText)
+        }
       },
       () => {}
     )
