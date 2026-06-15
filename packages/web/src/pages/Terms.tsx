@@ -89,9 +89,12 @@ export function Terms() {
 
       <Section title="9. Contact">
         <p style={s.p}>
-          Questions about these terms? Open an issue on our GitHub repository or contact us at
-          the email address listed in the Chrome Web Store listing.
+          Questions about these terms? Reach out via:
         </p>
+        <ul style={s.ul}>
+          <li>GitHub: <a href="https://github.com/hungphamtan/masqo" style={s.link}>github.com/hungphamtan/masqo</a></li>
+          <li>LinkedIn: <a href="https://www.linkedin.com/in/phamtanhung" style={s.link}>linkedin.com/in/phamtanhung</a></li>
+        </ul>
       </Section>
     </Layout>
   )

@@ -93,9 +93,12 @@ export function Privacy() {
 
       <Section title="9. Contact">
         <p style={s.p}>
-          Questions about this privacy policy? Open an issue on our GitHub repository or
-          contact us at the email address listed in the Chrome Web Store listing.
+          Questions about this privacy policy? Reach out via:
         </p>
+        <ul style={s.ul}>
+          <li>GitHub: <a href="https://github.com/hungphamtan/masqo" style={s.link}>github.com/hungphamtan/masqo</a></li>
+          <li>LinkedIn: <a href="https://www.linkedin.com/in/phamtanhung" style={s.link}>linkedin.com/in/phamtanhung</a></li>
+        </ul>
       </Section>
     </Layout>
   )
@@ -117,4 +120,5 @@ const s: Record<string, React.CSSProperties> = {
   p: { fontSize: 15, color: '#475569', lineHeight: 1.7, marginBottom: 12 },
   ul: { paddingLeft: 24, color: '#475569', fontSize: 15, lineHeight: 2 },
   code: { fontFamily: 'monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 3, fontSize: 12 },
+  link: { color: '#6366f1' },
 }
