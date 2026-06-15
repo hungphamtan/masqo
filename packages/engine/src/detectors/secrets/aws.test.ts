@@ -71,7 +71,7 @@ describe('AWS Secret Detector', () => {
 
   describe('AWS Session Token', () => {
     it('should detect AWS session token', () => {
-      const input = 'FwoGZXIvYXdzEBQaDJd8v7Zxy3xKZ2xSSSKwAR1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+      const input = 'AWS_SESSION_TOKEN=FwoGZXIvYXdzEBQaDJd8v7Zxy3xKZ2xSSSKwAR1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
       const detections = detectAwsSecrets(input)
 
       expect(detections.length).toBeGreaterThan(0)

@@ -134,8 +134,8 @@ export function detectAwsSecrets(input: string): Detection[] {
     )
     const hasSessionContext = /SESSION_TOKEN|session.*token/i.test(context)
 
-    // Only flag if we have session context or very long token (>100 chars is already suspicious)
-    if (!hasSessionContext && match[0].length < 100) continue
+    // Only flag if we have explicit session context (regex already guarantees length >= 100)
+    if (!hasSessionContext) continue
 
     detections.push({
       type: 'aws-session-token',

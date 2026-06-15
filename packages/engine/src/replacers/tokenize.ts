@@ -1,7 +1,15 @@
 import type { Detection } from '@masqo/shared'
 
-const tokenMap = new Map<string, string>()
-const reverseMap = new Map<string, string>()
+// Per-call maps — passed into tokenize/restore so state doesn't leak across scans
+export type TokenStore = { tokenMap: Map<string, string>; reverseMap: Map<string, string> }
+export function createTokenStore(): TokenStore {
+  return { tokenMap: new Map(), reverseMap: new Map() }
+}
+
+// Module-level store kept for the legacy restore() export (web app uses tokenize directly)
+const _defaultStore = createTokenStore()
+const tokenMap = _defaultStore.tokenMap
+const reverseMap = _defaultStore.reverseMap
 
 // FNV-1a 32-bit - fast, browser-compatible, no Node crypto dependency
 function fnv1a(str: string): string {

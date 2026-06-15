@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef, useEffect } from 'react'
+import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { createEngine } from '@masqo/engine'
 import { ReplacementMode } from '@masqo/shared'
@@ -7,7 +7,7 @@ import type { Detection } from '@masqo/shared'
 const engine = createEngine()
 
 type Mode = 'redact' | 'tokenize' | 'partial' | 'warn'
-type Policy = 'none' | 'developer' | 'general'
+type Policy = 'default' | 'developer' | 'general'
 
 const MODE_LABELS: Record<Mode, string> = {
   redact: 'Redact',
@@ -40,7 +40,7 @@ export function App() {
   const [detections, setDetections] = useState<Detection[]>([])
   const [accepted, setAccepted] = useState<Set<number>>(new Set())
   const [mode, setMode] = useState<Mode>('redact')
-  const [policy, setPolicy] = useState<Policy>('none')
+  const [policy, setPolicy] = useState<Policy>('default')
   const [scanned, setScanned] = useState(false)
   const [autoScan, setAutoScan] = useState(true)
   const [copied, setCopied] = useState(false)
@@ -51,7 +51,7 @@ export function App() {
     if (!text.trim()) return
     const result = engine.scan(text, {
       mode: REPLACEMENT_MODES[mode],
-      ...(policy !== 'none' ? { presetName: policy } : {}),
+      ...(policy !== 'default' ? { presetName: policy } : {}),
     })
     setDetections(result.detections)
     setAccepted(new Set(result.detections.map((_, i) => i)))
@@ -73,7 +73,7 @@ export function App() {
     })
   }
 
-  const finalOutput = (() => {
+  const finalOutput = useMemo(() => {
     if (!scanned) return ''
     const toRedact = detections.filter((_, i) => accepted.has(i))
     const sorted = [...toRedact].sort((a, b) => b.position.start - a.position.start)
@@ -82,7 +82,7 @@ export function App() {
       out = out.slice(0, d.position.start) + `[REDACTED:${d.type}]` + out.slice(d.position.end)
     }
     return out
-  })()
+  }, [scanned, detections, accepted, input])
 
   const exportFile = () => {
     const blob = new Blob([finalOutput], { type: 'text/plain' })
@@ -160,9 +160,9 @@ export function App() {
           <div style={s.toolbarGroup}>
             <span style={s.toolLabel}>Policy</span>
             <select value={policy} onChange={(e) => setPolicy(e.target.value as Policy)} style={s.select}>
-              <option value="none">None</option>
-              <option value="developer">Developer</option>
               <option value="general">General</option>
+              <option value="developer">Developer</option>
+              <option value="default">Default</option>
             </select>
           </div>
           <button onClick={() => fileRef.current?.click()} style={s.btnGhost}>

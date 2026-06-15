@@ -5,7 +5,7 @@ import { BUILT_IN_SITES } from '../sites.js'
 import type { SiteConfig } from '../sites.js'
 import type { StoredSettings } from '../types.js'
 
-const PRESETS = ['general', 'developer']
+const PRESETS = ['general', 'developer', 'default']
 const SUPPORTED_HOSTS = BUILT_IN_SITES.map((s) => s.hostname)
 const FONT = '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
 const MONO = '"JetBrains Mono", "Fira Code", ui-monospace, monospace'
@@ -134,8 +134,10 @@ function Popup() {
             </select>
             <div style={s.hint}>
               {settings.policy === 'developer'
-                ? 'Secrets + logs - tokenize mode'
-                : 'Secrets + PII - redact mode'}
+                ? 'Secrets + logs only — tokenize mode'
+                : settings.policy === 'default'
+                  ? 'All detectors, all confidence levels'
+                  : 'Secrets + PII — redact mode'}
             </div>
           </div>
 

@@ -11,7 +11,7 @@ chrome.runtime.onMessage.addListener(
     try {
       const result = engine.scan(message.text, {
         mode: ReplacementMode.Redact,
-        ...(message.policy ? { presetName: message.policy } : {}),
+        ...(message.policy && message.policy !== 'default' ? { presetName: message.policy } : {}),
       })
 
       sendResponse({

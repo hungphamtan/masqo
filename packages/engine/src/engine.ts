@@ -15,7 +15,7 @@ const DETECTOR_GROUPS: Record<string, string[]> = {
              'database', 'env', 'privatekeys', 'slack', 'openai', 'sendgrid',
              'twilio', 'npm', 'pypi', 'azure', 'basicauth'],
   logs: ['stacktrace', 'http', 'config'],
-  pii: [], // placeholder for future PII detectors
+  pii: ['pii'],
 }
 
 export class Engine {

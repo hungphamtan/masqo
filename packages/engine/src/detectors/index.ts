@@ -21,6 +21,7 @@ import { detectNpmSecrets } from './secrets/npm.js'
 import { detectPypiSecrets } from './secrets/pypi.js'
 import { detectAzureSecrets } from './secrets/azure.js'
 import { detectBasicAuthUrls } from './secrets/basicauth.js'
+import { detectPii } from './pii/pii.js'
 
 interface Registry {
   register(name: string, detector: Detector): void
@@ -58,6 +59,7 @@ export function createRegistry(options: CreateRegistryOptions = {}): Registry {
     detectors.set('pypi', { name: 'pypi', detect: detectPypiSecrets })
     detectors.set('azure', { name: 'azure', detect: detectAzureSecrets })
     detectors.set('basicauth', { name: 'basicauth', detect: detectBasicAuthUrls })
+    detectors.set('pii', { name: 'pii', detect: detectPii })
   }
 
   return {
