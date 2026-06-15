@@ -143,7 +143,7 @@ export function detectAwsSecrets(input: string): Detection[] {
         start: match.index,
         end: match.index + match[0].length,
       },
-      confidence: hasSessionContext ? 0.85 : 0.7,
+      confidence: 0.85,
       pattern: '[A-Za-z0-9/+=]{100,}',
       source: 'detector:secrets/aws',
       explanation: 'Detected AWS session token pattern (long base64 string)',

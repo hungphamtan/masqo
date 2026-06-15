@@ -32,7 +32,20 @@
   "web_accessible_resources": [
     {
       "resources": ["src/sidebar/index.html", "assets/*", "chunks/*"],
-      "matches": ["<all_urls>"]
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://chat.openai.com/*",
+        "https://claude.ai/*",
+        "https://gemini.google.com/*",
+        "https://grok.com/*",
+        "https://perplexity.ai/*",
+        "https://manus.im/*",
+        "https://poe.com/*",
+        "https://copilot.microsoft.com/*",
+        "https://you.com/*",
+        "https://character.ai/*",
+        "http://localhost/*"
+      ]
     }
   ],
   "icons": {

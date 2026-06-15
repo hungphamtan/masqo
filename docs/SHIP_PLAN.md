@@ -1,6 +1,6 @@
 # Masqo Ship Plan - v0.1.0
 
-> Status: **GO** - all critical security fixes shipped, domain live, web app deployed
+> Status: **READY FOR LAUNCH** - all critical security blockers fixed, npm published, web app live
 >
 > Last reviewed: 2026-06-15
 
@@ -10,9 +10,9 @@
 
 | Surface | Description | Status |
 |---|---|---|
-| Chrome Extension | MV3, IIFE content script, 11 built-in AI chat sites, user-managed site list | ⏳ Pending CWS submission |
+| Chrome Extension | MV3, IIFE content script, 11 built-in AI chat sites, user-managed site list | ⏳ Pending CWS submission (security fixes shipped) |
 | Web App | Static Vite/React SPA, auto-scan, Privacy / Terms / How it works pages | ✅ Live at masqo.dev |
-| CLI (`@masqo/cli`) | `masqo redact`, `masqo review`, `masqo config`, `masqo install-hook claude-code` | ⏳ Pending npm publish |
+| CLI (`@masqo/cli`) | `masqo redact`, `masqo review`, `masqo config`, `masqo install-hook claude-code` | ✅ Live on npm (v0.1.0, v0.1.1) |
 
 ---
 
@@ -28,13 +28,14 @@
 
 ## Recommended fixes (before v0.2.0)
 
-- [ ] Session token detector dead condition - `match[0].length < 100` never true for `{100,}` regex. Fix: `if (!hasSessionContext) continue`. `packages/engine/src/detectors/secrets/aws.ts:138`
+- [x] Session token detector dead condition - removed unreachable ternary. `packages/engine/src/detectors/secrets/aws.ts:146`
+- [x] Restrict `web_accessible_resources` matches from `<all_urls>` to built-in hostnames only. `packages/extension/public/manifest.json:35`
+- [x] postMessage wildcard origin fixed - use explicit extension origin. `packages/extension/src/content/common.ts:107, sidebar.tsx:62/72`
+- [x] Add `npm audit --audit-level=high` to CI. `.github/workflows/ci.yml:25`
 - [ ] `loadText` double scan - `setTimeout(0)` + debounce both fire. Fix: remove setTimeout. `packages/web/src/App.tsx:91-95`
 - [ ] `finalOutput` IIFE recalculates every render - wrap in `useMemo`. `packages/web/src/App.tsx:67-76`
 - [ ] Tokenize module-level `tokenMap` grows unbounded. `packages/engine/src/replacers/tokenize.ts:3-4`
-- [ ] Add `npm audit --audit-level=high` to CI. `.github/workflows/ci.yml`
 - [ ] Update `docs/claude-code-hook-setup.md` - describes old `--hook + $CLAUDE_FILE_PATH`, installed hook uses `--claude-hook + stdin JSON`
-- [ ] Restrict `web_accessible_resources` matches from `<all_urls>` to built-in hostnames only
 
 ---
 
@@ -46,7 +47,7 @@
 - [x] Web app deployed - `https://masqo.dev` live on Cloudflare Pages
 - [x] Privacy policy live - `https://masqo.dev/privacy`
 - [x] Terms live - `https://masqo.dev/terms`
-- [ ] Set up contact email address (referenced in Privacy and Terms pages)
+- [x] Contact links live - GitHub & LinkedIn contact methods in Privacy and Terms pages
 
 ### 2. Chrome Web Store ⏳
 
@@ -86,14 +87,11 @@
 - [ ] Paste `<script>` tag into `packages/web/index.html`
 - [ ] Commit + push → Cloudflare Pages auto-deploys
 
-### 5. npm - `@masqo/cli` ⏳
+### 5. npm - `@masqo/cli` ✅
 
-- [ ] Create npm account at [npmjs.com](https://npmjs.com) (free)
-- [ ] Reserve `@masqo` org scope: `npm org create masqo`
-- [ ] First publish:
-  ```bash
-  cd /Users/Hung/masqo/packages/cli && npm publish --access public
-  ```
+- [x] Create npm account at [npmjs.com](https://npmjs.com) (free)
+- [x] Reserve `@masqo` org scope: `npm org create masqo`
+- [x] First publish: v0.1.0 and v0.1.1 live on npm
 - [ ] Add `NPM_TOKEN` as GitHub Actions secret (enables automated publish on tag)
 
 ---
@@ -174,12 +172,13 @@
 
 | Package | Tests | Status |
 |---|---|---|
-| engine | 216 | ✅ passing |
+| engine | 244 | ✅ passing |
 | cli | 45 | ✅ passing |
 | extension | 23 | ✅ passing |
 | web | 3 | ✅ passing |
 | shared | 6 | ✅ passing |
-| **Total** | **293** | ✅ |
+| integration-tests | 15 | ✅ passing |
+| **Total** | **336** | ✅ |
 
 ---
 

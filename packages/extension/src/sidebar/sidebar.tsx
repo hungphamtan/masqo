@@ -59,7 +59,7 @@ function Sidebar() {
   }
 
   const pasteClean = () => {
-    window.parent.postMessage({ type: 'MASQO_ACCEPT', text: buildOutput() }, '*')
+    window.parent.postMessage({ type: 'MASQO_ACCEPT', text: buildOutput() }, chrome.runtime.getURL('').slice(0, -1))
   }
 
   const copyToClipboard = () => {
@@ -69,7 +69,7 @@ function Sidebar() {
   }
 
   const reject = () => {
-    window.parent.postMessage({ type: 'MASQO_REJECT' }, '*')
+    window.parent.postMessage({ type: 'MASQO_REJECT' }, chrome.runtime.getURL('').slice(0, -1))
   }
 
   if (!data) {

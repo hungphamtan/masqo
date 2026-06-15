@@ -96,15 +96,12 @@ export function injectSidebar(
   document.body.appendChild(container)
 
   iframe.addEventListener('load', () => {
-    // Target origin '*' is acceptable here - the iframe src is already locked
-    // to the extension URL. The security boundary that matters is the reverse:
-    // the content script only accepts MASQO_ACCEPT/REJECT from extensionOrigin.
     iframe.contentWindow?.postMessage({
       type: 'MASQO_REVIEW_DATA',
       original,
       output: result.output,
       detections: result.detections,
-    }, '*')
+    }, extensionOrigin)
   })
 
   // Named handler so it can be removed after use - prevents listener accumulation
