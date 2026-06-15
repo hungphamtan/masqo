@@ -15,6 +15,7 @@ const copyManifestPlugin = {
 }
 
 export default defineConfig({
+  base: './',
   plugins: [react(), copyManifestPlugin],
   build: {
     outDir: 'dist',
