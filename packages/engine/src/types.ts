@@ -58,7 +58,7 @@ export interface EngineConfig {
   minConfidence?: number
 
   /**
-   * Policy object — overrides mode, filters detectors, applies custom rules
+   * Policy object - overrides mode, filters detectors, applies custom rules
    */
   policy?: Policy
 

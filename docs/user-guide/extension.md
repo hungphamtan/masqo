@@ -13,9 +13,9 @@ When you paste text containing secrets into ChatGPT, Claude.ai, or Gemini:
 
 1. Masqo intercepts the paste event
 2. Scans the clipboard text locally (no network call)
-3. If secrets found — blocks the paste and opens the review sidebar
+3. If secrets found - blocks the paste and opens the review sidebar
 4. You accept/reject each detection
-5. Click **Paste clean** — only approved redactions applied
+5. Click **Paste clean** - only approved redactions applied
 
 ## Supported sites
 

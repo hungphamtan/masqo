@@ -1,6 +1,6 @@
-# Masqo Ship Plan — v0.1.0
+# Masqo Ship Plan - v0.1.0
 
-> Status: **GO** — all critical security fixes shipped, domain live, web app deployed
+> Status: **GO** - all critical security fixes shipped, domain live, web app deployed
 >
 > Last reviewed: 2026-06-15
 
@@ -16,24 +16,24 @@
 
 ---
 
-## Blockers — all resolved ✅
+## Blockers - all resolved ✅
 
-- [x] **CRITICAL-2** `event.preventDefault()` sync fix — paste interception now functional
-- [x] **CRITICAL-1** postMessage listener leak fixed — named handler removed after use; origin validated
-- [x] **CRITICAL-3** MultiEdit bypass fixed — `edits[].new_string` now extracted in `--claude-hook`
+- [x] **CRITICAL-2** `event.preventDefault()` sync fix - paste interception now functional
+- [x] **CRITICAL-1** postMessage listener leak fixed - named handler removed after use; origin validated
+- [x] **CRITICAL-3** MultiEdit bypass fixed - `edits[].new_string` now extracted in `--claude-hook`
 - [x] **CRITICAL-4** `customSites` schema validated via `isValidSiteConfig()` on storage read
-- [x] **CRITICAL-5** `detectionHistory` moved to `chrome.storage.local` — no longer syncs to Google
+- [x] **CRITICAL-5** `detectionHistory` moved to `chrome.storage.local` - no longer syncs to Google
 
 ---
 
 ## Recommended fixes (before v0.2.0)
 
-- [ ] Session token detector dead condition — `match[0].length < 100` never true for `{100,}` regex. Fix: `if (!hasSessionContext) continue`. `packages/engine/src/detectors/secrets/aws.ts:138`
-- [ ] `loadText` double scan — `setTimeout(0)` + debounce both fire. Fix: remove setTimeout. `packages/web/src/App.tsx:91-95`
-- [ ] `finalOutput` IIFE recalculates every render — wrap in `useMemo`. `packages/web/src/App.tsx:67-76`
+- [ ] Session token detector dead condition - `match[0].length < 100` never true for `{100,}` regex. Fix: `if (!hasSessionContext) continue`. `packages/engine/src/detectors/secrets/aws.ts:138`
+- [ ] `loadText` double scan - `setTimeout(0)` + debounce both fire. Fix: remove setTimeout. `packages/web/src/App.tsx:91-95`
+- [ ] `finalOutput` IIFE recalculates every render - wrap in `useMemo`. `packages/web/src/App.tsx:67-76`
 - [ ] Tokenize module-level `tokenMap` grows unbounded. `packages/engine/src/replacers/tokenize.ts:3-4`
 - [ ] Add `npm audit --audit-level=high` to CI. `.github/workflows/ci.yml`
-- [ ] Update `docs/claude-code-hook-setup.md` — describes old `--hook + $CLAUDE_FILE_PATH`, installed hook uses `--claude-hook + stdin JSON`
+- [ ] Update `docs/claude-code-hook-setup.md` - describes old `--hook + $CLAUDE_FILE_PATH`, installed hook uses `--claude-hook + stdin JSON`
 - [ ] Restrict `web_accessible_resources` matches from `<all_urls>` to built-in hostnames only
 
 ---
@@ -42,16 +42,16 @@
 
 ### 1. Identity & legal ✅
 
-- [x] Domain registered — `masqo.dev` (Cloudflare Registrar)
-- [x] Web app deployed — `https://masqo.dev` live on Cloudflare Pages
-- [x] Privacy policy live — `https://masqo.dev/privacy`
-- [x] Terms live — `https://masqo.dev/terms`
+- [x] Domain registered - `masqo.dev` (Cloudflare Registrar)
+- [x] Web app deployed - `https://masqo.dev` live on Cloudflare Pages
+- [x] Privacy policy live - `https://masqo.dev/privacy`
+- [x] Terms live - `https://masqo.dev/terms`
 - [ ] Set up contact email address (referenced in Privacy and Terms pages)
 
 ### 2. Chrome Web Store ⏳
 
-- [ ] Create [Chrome Web Store Developer account](https://chrome.google.com/webstore/devconsole) — **$5 one-time fee**
-  - Note: Vietnamese cards may get `OR_CCREU_01` error — use Wise virtual USD card as workaround
+- [ ] Create [Chrome Web Store Developer account](https://chrome.google.com/webstore/devconsole) - **$5 one-time fee**
+  - Note: Vietnamese cards may get `OR_CCREU_01` error - use Wise virtual USD card as workaround
   - HSBC Vietnam credit cards have higher success rate but may still fail
 - [ ] Package extension ZIP:
   ```bash
@@ -86,7 +86,7 @@
 - [ ] Paste `<script>` tag into `packages/web/index.html`
 - [ ] Commit + push → Cloudflare Pages auto-deploys
 
-### 5. npm — `@masqo/cli` ⏳
+### 5. npm - `@masqo/cli` ⏳
 
 - [ ] Create npm account at [npmjs.com](https://npmjs.com) (free)
 - [ ] Reserve `@masqo` org scope: `npm org create masqo`
@@ -115,26 +115,26 @@
 
 ### Already automated ✅
 
-- [x] CI on push/PR — build, all tests, integration tests, benchmarks (`.github/workflows/ci.yml`)
+- [x] CI on push/PR - build, all tests, integration tests, benchmarks (`.github/workflows/ci.yml`)
 - [x] Type checking on PR
 - [x] GitHub Release creation on `v*.*.*` tag (`.github/workflows/release.yml`)
 - [x] Cloudflare Pages auto-deploy on push to `master`
 
 ### Needs setup (one-time)
 
-- [ ] **npm publish on tag** — Add `NPM_TOKEN` secret + step to `release.yml`:
+- [ ] **npm publish on tag** - Add `NPM_TOKEN` secret + step to `release.yml`:
   ```yaml
   - name: Publish @masqo/cli to npm
     run: npm publish --workspace packages/cli --access public
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   ```
-- [ ] **Extension ZIP packaging on tag** — Add to `release.yml`:
+- [ ] **Extension ZIP packaging on tag** - Add to `release.yml`:
   ```yaml
   - name: Package extension
     run: cd packages/extension && zip -r ../../masqo-extension-${{ github.ref_name }}.zip dist/
   ```
-- [ ] **Version sync from git tag** — Add to `release.yml`:
+- [ ] **Version sync from git tag** - Add to `release.yml`:
   ```yaml
   - name: Set version from tag
     run: |
@@ -142,12 +142,12 @@
       npm version $VERSION --no-git-tag-version --workspace packages/cli
       jq --arg v "$VERSION" '.version = $v' packages/extension/public/manifest.json > /tmp/m.json && mv /tmp/m.json packages/extension/public/manifest.json
   ```
-- [ ] **`npm audit` in CI** — Add to `ci.yml`:
+- [ ] **`npm audit` in CI** - Add to `ci.yml`:
   ```yaml
   - name: Audit dependencies
     run: npm audit --audit-level=high
   ```
-- [ ] **CWS updates post-first-submission** — Use Chrome Web Store Publish API via GitHub Action after initial acceptance
+- [ ] **CWS updates post-first-submission** - Use Chrome Web Store Publish API via GitHub Action after initial acceptance
 
 ---
 

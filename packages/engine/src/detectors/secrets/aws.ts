@@ -94,7 +94,7 @@ export function detectAwsSecrets(input: string): Detection[] {
     // Skip if exact match length is not 40 (to reduce false positives)
     if (match[0].length !== 40) continue
 
-    // Require AWS context — bare 40-char base64 has too many false positives (JWT segments, etc.)
+    // Require AWS context - bare 40-char base64 has too many false positives (JWT segments, etc.)
     const context = input.substring(
       Math.max(0, match.index - 100),
       Math.min(input.length, match.index + match[0].length + 100)

@@ -139,11 +139,9 @@ export function App() {
             <div style={s.logoMark}>M</div>
             <span style={s.logoText}>Masqo</span>
           </Link>
-          <span style={s.tagline}>Local secret redaction — nothing leaves your browser</span>
+          <span style={s.tagline}>Local secret redaction - nothing leaves your browser</span>
           <nav style={s.nav}>
             <Link to="/how-it-works" style={s.navLink}>How it works</Link>
-            <Link to="/privacy" style={s.navLink}>Privacy</Link>
-            <Link to="/terms" style={s.navLink}>Terms</Link>
           </nav>
         </div>
       </header>
@@ -200,7 +198,7 @@ export function App() {
           </div>
         </div>
 
-        {/* Status bar — only when scanned */}
+        {/* Status bar - only when scanned */}
         {scanned && (
           <div style={{
             ...s.statusBar,
@@ -209,14 +207,14 @@ export function App() {
           }}>
             {detections.length === 0 ? (
               <span style={{ color: '#15803D', fontWeight: 600, fontSize: 13 }}>
-                ✓ No secrets detected — safe to share
+                ✓ No secrets detected - safe to share
               </span>
             ) : (
               <span style={{ color: '#9F1239', fontWeight: 600, fontSize: 13 }}>
                 {threatCount > 0 && `⚠ ${threatCount} high-risk`}
                 {threatCount > 0 && detections.length > threatCount && ` + `}
                 {detections.length > threatCount && `${detections.length - threatCount} other`}
-                {` detection${detections.length !== 1 ? 's' : ''} — ${accepted.size} selected for redaction`}
+                {` detection${detections.length !== 1 ? 's' : ''} - ${accepted.size} selected for redaction`}
               </span>
             )}
             {detections.length > 0 && (
@@ -229,7 +227,7 @@ export function App() {
         )}
 
         {/* Editor panels */}
-        <div style={s.panels}>
+        <div className="panels-grid">
           <div style={s.panel}>
             <div style={s.panelHeader}>
               <span style={s.panelLabel}>INPUT</span>
@@ -322,7 +320,7 @@ export function App() {
       </main>
 
       <footer style={s.footer}>
-        <span>All processing runs locally in your browser — no data sent to any server.</span>
+        <span>All processing runs locally in your browser - no data sent to any server.</span>
         <nav style={{ display: 'flex', gap: 16 }}>
           <Link to="/how-it-works" style={s.footerLink}>How it works</Link>
           <Link to="/privacy" style={s.footerLink}>Privacy</Link>
@@ -339,13 +337,13 @@ const MONO = '"JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, mono
 const s: Record<string, React.CSSProperties> = {
   page: { display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#F8FAFC', fontFamily: FONT },
   header: { background: '#0F172A', color: '#fff', padding: '0 24px', borderBottom: '1px solid #1E293B' },
-  headerInner: { maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 14, height: 56 },
-  logoMark: { width: 28, height: 28, borderRadius: 6, background: '#E11D48', color: '#fff', fontWeight: 800, fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: FONT, letterSpacing: '-0.5px' },
+  headerInner: { maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 14, minHeight: 56, flexWrap: 'wrap', padding: '8px 0' },
+  logoMark: { width: 28, height: 28, borderRadius: 6, background: '#E11D48', color: '#fff', fontWeight: 800, fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: FONT, letterSpacing: '-0.5px', flexShrink: 0 },
   logoText: { fontWeight: 700, fontSize: 17, color: '#F8FAFC', letterSpacing: '-0.3px' },
-  tagline: { fontSize: 12, color: '#475569', marginLeft: 4 },
-  nav: { marginLeft: 'auto', display: 'flex', gap: 24 },
+  tagline: { fontSize: 12, color: '#475569', marginLeft: 4, display: 'none' },
+  nav: { marginLeft: 'auto', display: 'flex', gap: 16, flexWrap: 'wrap' },
   navLink: { fontSize: 13, color: '#94A3B8', textDecoration: 'none' },
-  main: { flex: 1, maxWidth: 1200, margin: '0 auto', width: '100%', padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 12 },
+  main: { flex: 1, maxWidth: 1200, margin: '0 auto', width: '100%', padding: '16px 16px', display: 'flex', flexDirection: 'column', gap: 12 },
   toolbar: { display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', background: '#fff', border: '1px solid #E2E8F0', borderRadius: 10, padding: '10px 14px' },
   toolbarGroup: { display: 'flex', alignItems: 'center', gap: 7 },
   toolbarRight: { display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto' },
@@ -358,7 +356,6 @@ const s: Record<string, React.CSSProperties> = {
   togglePill: { display: 'inline-flex', width: 36, height: 20, borderRadius: 10, position: 'relative', transition: 'background 0.2s', flexShrink: 0 },
   toggleDot: { position: 'absolute', top: 2, width: 16, height: 16, borderRadius: '50%', background: '#fff', transition: 'transform 0.2s', boxShadow: '0 1px 3px rgba(0,0,0,0.2)' },
   statusBar: { display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 8, border: '1px solid', fontSize: 13 },
-  panels: { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 },
   panel: { display: 'flex', flexDirection: 'column', gap: 6 },
   panelHeader: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 2px' },
   panelLabel: { fontSize: 10, fontWeight: 700, color: '#94A3B8', letterSpacing: '0.08em' },

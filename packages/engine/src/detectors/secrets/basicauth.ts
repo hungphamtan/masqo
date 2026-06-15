@@ -1,6 +1,6 @@
 import type { Detection } from '@masqo/shared'
 
-// https://user:pass@host — exclude DB schemes already handled by database detector
+// https://user:pass@host - exclude DB schemes already handled by database detector
 const DB_SCHEMES = /^(?:postgres(?:ql)?|mysql|mongodb(?:\+srv)?|redis(?:s)?):\/\//i
 const BASIC_AUTH_PATTERN = /https?:\/\/[^:@\s]+:[^@\s]+@[^\s"']+/gi
 

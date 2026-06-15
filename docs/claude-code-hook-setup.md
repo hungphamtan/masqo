@@ -18,8 +18,8 @@ When Claude Code writes or edits a file, the hook runs:
 masqo redact --hook < "$CLAUDE_FILE_PATH"
 ```
 
-- **Exit 0**: No secrets found — Claude Code proceeds normally
-- **Exit 1**: Secrets detected — Claude Code sees the redacted output in JSON format
+- **Exit 0**: No secrets found - Claude Code proceeds normally
+- **Exit 1**: Secrets detected - Claude Code sees the redacted output in JSON format
 
 ## Manual Setup
 

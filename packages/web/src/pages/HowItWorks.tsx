@@ -22,7 +22,7 @@ export function HowItWorks() {
         </Step>
         <Step n="3" title="Review and accept">
           Each detection is shown with its type, confidence score, and a preview of the matched text.
-          You choose which ones to redact — accept all, reject all, or pick individually.
+          You choose which ones to redact - accept all, reject all, or pick individually.
         </Step>
         <Step n="4" title="Copy or export clean output">
           The redacted output is ready to copy to clipboard or export as a file.
@@ -78,16 +78,61 @@ export function HowItWorks() {
         ))}
       </div>
 
+      <h2 style={s.h2}>Policies</h2>
+      <p style={s.p}>
+        Policies control which detectors run and at what confidence threshold. Pick one from the
+        Policy dropdown in the toolbar, or leave it on <strong>None</strong> to run all detectors
+        with default settings.
+      </p>
+      <table style={s.table}>
+        <thead>
+          <tr>
+            <th style={s.th}>Policy</th>
+            <th style={s.th}>Secrets</th>
+            <th style={s.th}>PII</th>
+            <th style={s.th}>Logs</th>
+            <th style={s.th}>Default mode</th>
+            <th style={s.th}>Best for</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style={s.td}><strong>None</strong></td>
+            <td style={s.td}>All confidence</td>
+            <td style={s.td}>—</td>
+            <td style={s.td}>—</td>
+            <td style={s.td}>Your choice</td>
+            <td style={s.td}>Quick scan, no filtering</td>
+          </tr>
+          <tr>
+            <td style={s.td}><strong>Developer</strong></td>
+            <td style={s.td}>High confidence only</td>
+            <td style={s.td}>Disabled</td>
+            <td style={s.td}>Medium+</td>
+            <td style={s.td}>Tokenize</td>
+            <td style={s.td}>Sharing code, logs, stack traces — skips names/emails, keeps stable placeholders</td>
+          </tr>
+          <tr>
+            <td style={s.td}><strong>General</strong></td>
+            <td style={s.td}>Medium+</td>
+            <td style={s.td}>Medium+</td>
+            <td style={s.td}>Disabled</td>
+            <td style={s.td}>Redact</td>
+            <td style={s.td}>Documents and messages — catches names, emails, phone numbers alongside secrets</td>
+          </tr>
+        </tbody>
+      </table>
+
       <h2 style={s.h2}>Browser extension</h2>
       <p style={s.p}>
         The Masqo browser extension intercepts paste events on AI chat interfaces (ChatGPT, Claude,
         Gemini, Grok, Perplexity and more) and shows a review panel before the text is inserted.
-        You can accept, reject, or toggle individual detections — then click "Paste clean" to insert
+        You can accept, reject, or toggle individual detections - then click "Paste clean" to insert
         the redacted version.
       </p>
       <p style={s.p}>
         The extension uses the same detection engine as this web app. All processing happens locally
-        in your browser. The extension never reads your clipboard passively — it only scans text at
+        in your browser. The extension never reads your clipboard passively - it only scans text at
         the moment you paste.
       </p>
     </Layout>
@@ -112,11 +157,11 @@ const s: Record<string, React.CSSProperties> = {
   lead: { fontSize: 16, color: '#475569', lineHeight: 1.7, marginBottom: 40, maxWidth: 640 },
   p: { fontSize: 15, color: '#475569', lineHeight: 1.7, marginBottom: 16 },
   steps: { display: 'flex', flexDirection: 'column', gap: 24, marginBottom: 48 },
-  table: { width: '100%', borderCollapse: 'collapse', fontSize: 14 },
-  th: { textAlign: 'left', padding: '10px 16px', background: '#f8fafc', borderBottom: '2px solid #e2e8f0', fontWeight: 600, color: '#374151' },
-  td: { padding: '10px 16px', borderBottom: '1px solid #f1f5f9', color: '#475569', verticalAlign: 'top' },
+  table: { width: '100%', borderCollapse: 'collapse', fontSize: 14, display: 'block', overflowX: 'auto', WebkitOverflowScrolling: 'touch' },
+  th: { textAlign: 'left', padding: '10px 12px', background: '#f8fafc', borderBottom: '2px solid #e2e8f0', fontWeight: 600, color: '#374151', whiteSpace: 'nowrap' },
+  td: { padding: '10px 12px', borderBottom: '1px solid #f1f5f9', color: '#475569', verticalAlign: 'top' },
   code: { fontFamily: 'monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 3, fontSize: 12, color: '#dc2626' },
-  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 8 },
+  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 8 },
   chip: { background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 6, padding: '7px 12px', fontSize: 13, color: '#166534' },
 }
 

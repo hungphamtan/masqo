@@ -100,6 +100,6 @@ All detectors run locally. Confidence scores reflect pattern specificity.
 |-------|-------|---------|
 | high | ≥ 0.80 | Structurally unambiguous (prefix + fixed length) |
 | medium | 0.50–0.79 | Pattern matches but context-dependent |
-| low | < 0.50 | Heuristic — review manually |
+| low | < 0.50 | Heuristic - review manually |
 
 Use `minConfidence` in engine config or `confidence` in policy to filter by threshold.

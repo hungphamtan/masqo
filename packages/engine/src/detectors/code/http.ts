@@ -30,7 +30,7 @@ export function detectHttpSecrets(input: string): Detection[] {
       confidence: 0.75,
       pattern: '(Set-)Cookie: ...',
       source: 'detector:code/http',
-      explanation: 'Detected HTTP Cookie header — may contain session or auth cookies',
+      explanation: 'Detected HTTP Cookie header - may contain session or auth cookies',
       originalText: match[0],
     })
   }

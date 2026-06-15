@@ -48,7 +48,7 @@ The first release should prioritize high-confidence, high-frequency masking case
 - Enterprise governance features such as team-wide enforcement, analytics, and auditability.[cite:47][cite:55][cite:72]
 
 ## Positioning
-The clearest market message is not “another privacy extension” and not “another PII SDK.” The stronger statement is: **A local privacy engine for AI workflows — hook, CLI, extension, and review UI — optimized for developers and usable by teams.** This positions the product above individual point tools and below heavyweight enterprise platforms, while staying grounded in a real workflow gap validated by current tools.[cite:31][cite:45][cite:46][cite:65]
+The clearest market message is not “another privacy extension” and not “another PII SDK.” The stronger statement is: **A local privacy engine for AI workflows - hook, CLI, extension, and review UI - optimized for developers and usable by teams.** This positions the product above individual point tools and below heavyweight enterprise platforms, while staying grounded in a real workflow gap validated by current tools.[cite:31][cite:45][cite:46][cite:65]
 
 ## Success criteria
 The early success signal is not raw install count, but repeated use in high-risk workflows: sanitizing logs, secrets, configs, and customer text before sending them to AI tools. If users adopt the CLI/hook path for engineering work and the extension path for general AI chat work, that would validate the multi-surface engine strategy and justify later investment in team and enterprise layers.[cite:31][cite:63][cite:75]

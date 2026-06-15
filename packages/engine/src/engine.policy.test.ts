@@ -15,7 +15,7 @@ describe('Engine + Policy Integration', () => {
     expect(result.mode).toBe('tokenize')
   })
 
-  it('respects policy detector enablement — disabled detector skipped', () => {
+  it('respects policy detector enablement - disabled detector skipped', () => {
     const engine = createEngine()
     const policy = loadPreset('developer') // pii disabled
     // If there were PII detections, they'd be skipped.
@@ -36,7 +36,7 @@ describe('Engine + Policy Integration', () => {
       policy,
     })
     expect(result.detections.some((d) => d.type === 'corp-secret')).toBe(true)
-    // developer preset uses tokenize mode — policy overrides the mode param
+    // developer preset uses tokenize mode - policy overrides the mode param
     expect(result.output).not.toContain('MYCORP_ABCDEF1234567890')
   })
 

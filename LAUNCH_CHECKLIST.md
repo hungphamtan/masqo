@@ -16,11 +16,11 @@
 
 ## CLI ✅
 
-- [x] `masqo redact` — stdin + file, all modes, --hook, --format json
-- [x] `masqo review` — Ink TUI + --accept-all/--reject-all
-- [x] `masqo config` — get/set-policy/add-rule, persisted to ~/.masqo/
-- [x] `masqo install-hook claude-code` — installs `--claude-hook` stdin JSON hook
-- [x] `--claude-hook` mode — reads Claude Code PreToolUse JSON, handles Write/Edit/MultiEdit
+- [x] `masqo redact` - stdin + file, all modes, --hook, --format json
+- [x] `masqo review` - Ink TUI + --accept-all/--reject-all
+- [x] `masqo config` - get/set-policy/add-rule, persisted to ~/.masqo/
+- [x] `masqo install-hook claude-code` - installs `--claude-hook` stdin JSON hook
+- [x] `--claude-hook` mode - reads Claude Code PreToolUse JSON, handles Write/Edit/MultiEdit
 - [x] 38 tests passing
 
 ## Chrome Extension ✅
@@ -55,12 +55,12 @@
 
 ## CI/CD ✅
 
-- [x] `.github/workflows/ci.yml` — test + build + integration + benchmark on every PR
-- [x] `.github/workflows/release.yml` — tag → GitHub Release with dist artifacts
+- [x] `.github/workflows/ci.yml` - test + build + integration + benchmark on every PR
+- [x] `.github/workflows/release.yml` - tag → GitHub Release with dist artifacts
 
 ## Security ✅ (post ship-review fixes)
 
-- [x] All detection local — no network calls
+- [x] All detection local - no network calls
 - [x] event.preventDefault() called synchronously (paste interception functional)
 - [x] postMessage origin validated on content script receive path
 - [x] detectionHistory not synced to Google

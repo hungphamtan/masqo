@@ -48,4 +48,4 @@ masqo config add-rule \
 
 ## Import/export
 
-Policy format is the same across CLI and extension — copy the JSON to either surface.
+Policy format is the same across CLI and extension - copy the JSON to either surface.

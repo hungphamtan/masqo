@@ -194,7 +194,7 @@ describe('Basic Auth URL Detector', () => {
   })
 
   it('does not flag DB connection strings (already covered by database detector)', () => {
-    // postgres/mysql/mongodb/redis — handled by database detector, no double-flag
+    // postgres/mysql/mongodb/redis - handled by database detector, no double-flag
     const input = 'postgresql://user:pass@localhost/db'
     expect(detectBasicAuthUrls(input)).toHaveLength(0)
   })

@@ -71,7 +71,7 @@ export const redactCommand = new Command('redact')
         ''
 
       if (!content.trim()) {
-        // Nothing to scan — let Claude proceed
+        // Nothing to scan - let Claude proceed
         process.stdout.write(JSON.stringify({ continue: true }) + '\n')
         process.exit(0)
       }
@@ -126,7 +126,7 @@ export const redactCommand = new Command('redact')
       ...(opts.policy ? { presetName: opts.policy } : {}),
     })
 
-    spinner?.succeed(`Scanned — ${result.detections.length} detection(s)`)
+    spinner?.succeed(`Scanned - ${result.detections.length} detection(s)`)
 
     const isJson = isHook || opts.format === 'json'
 

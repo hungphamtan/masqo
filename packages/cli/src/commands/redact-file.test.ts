@@ -23,7 +23,7 @@ afterEach(() => {
   if (existsSync(tmpOut)) unlinkSync(tmpOut)
 })
 
-describe('redact command — file input (Task 4.3)', () => {
+describe('redact command - file input (Task 4.3)', () => {
   it('reads from file argument', () => {
     const r = run(['redact', tmpIn])
     expect(r.code).toBe(0)

@@ -53,7 +53,7 @@ export const installHookCommand = new Command('install-hook')
     )
 
     if (alreadyInstalled) {
-      process.stdout.write('masqo hook already installed — no changes made\n')
+      process.stdout.write('masqo hook already installed - no changes made\n')
       return
     }
 

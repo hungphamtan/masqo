@@ -1,6 +1,6 @@
 # Getting Started
 
-Masqo detects and redacts secrets before they reach AI tools. Runs entirely locally — no cloud, no telemetry.
+Masqo detects and redacts secrets before they reach AI tools. Runs entirely locally - no cloud, no telemetry.
 
 ## Install
 
@@ -22,7 +22,7 @@ echo "AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" | masqo re
 # Redact a file
 masqo redact secrets.log
 
-# Interactive review — approve/reject each detection
+# Interactive review - approve/reject each detection
 masqo review secrets.log
 ```
 

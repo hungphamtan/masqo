@@ -21,7 +21,7 @@ export function detectStackTraces(input: string): Detection[] {
       confidence,
       pattern: type,
       source: 'detector:code/stacktrace',
-      explanation: `Detected ${type} stack frame — may expose internal file paths`,
+      explanation: `Detected ${type} stack frame - may expose internal file paths`,
       originalText: match[0],
     })
   }

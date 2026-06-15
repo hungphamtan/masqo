@@ -11,7 +11,7 @@ npm run preview    # Preview production build
 
 ## Deploy
 
-The web app is a static bundle — no server required.
+The web app is a static bundle - no server required.
 
 **Netlify:** Drag `packages/web/dist/` to netlify.com/drop
 
@@ -34,7 +34,7 @@ cd packages/web && npm run build
 - **Open file** button for file picker
 - Choose **mode** (redact / tokenize / partial / warn)
 - Choose **policy** (none / developer / general)
-- Click **Scan** — detections appear below
+- Click **Scan** - detections appear below
 - **Toggle** each detection to accept or reject
 - **Accept all / Reject all** for bulk action
 - Output panel shows live preview as you toggle

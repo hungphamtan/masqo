@@ -324,7 +324,7 @@ describe('SecretDetector', () => {
 - **Store unencrypted sensitive data** in config files or extension storage
 - **Modify original files in-place** without explicit user confirmation
 - **Auto-redact without review** in interactive modes (extension, web app)
-- **Silently fail detections** — always report what was checked and what was found
+- **Silently fail detections** - always report what was checked and what was found
 - **Implement obfuscation** that obscures detection logic (transparency is critical for trust)
 - **Bundle detection patterns from proprietary sources** without proper licensing
 
@@ -366,7 +366,7 @@ describe('SecretDetector', () => {
 - ❌ Larger repository size
 - ❌ More complex CI/CD setup
 
-**Alternatives Considered**: Separate repos with npm packages — rejected due to versioning complexity and slower iteration.
+**Alternatives Considered**: Separate repos with npm packages - rejected due to versioning complexity and slower iteration.
 
 ---
 
@@ -417,13 +417,13 @@ describe('SecretDetector', () => {
 
 **Context**: Need high-quality detection. Options: build from scratch, integrate existing libraries, or use cloud APIs.
 
-**Decision**: Hybrid approach — custom regex detectors for core patterns + integrate battle-tested libraries (ggshield, detect-secrets) for secret detection.
+**Decision**: Hybrid approach - custom regex detectors for core patterns + integrate battle-tested libraries (ggshield, detect-secrets) for secret detection.
 
 **Consequences**:
-- ✅ Faster time to market — don't reinvent secret patterns
+- ✅ Faster time to market - don't reinvent secret patterns
 - ✅ Leverage community-maintained pattern databases
-- ✅ Explainability — can trace detections to specific patterns
-- ✅ Flexibility — can add custom rules for domain-specific cases
+- ✅ Explainability - can trace detections to specific patterns
+- ✅ Flexibility - can add custom rules for domain-specific cases
 - ❌ Dependency on external libraries (maintenance, licensing)
 - ❌ Potential performance overhead from multiple detection passes
 - ❌ Pattern conflicts between custom and library detectors
@@ -541,7 +541,7 @@ describe('SecretDetector', () => {
 **Consequences**:
 - ✅ User control and confidence
 - ✅ Catch false positives before they break workflows
-- ✅ Educational — users learn what's being detected
+- ✅ Educational - users learn what's being detected
 - ❌ Adds friction to workflow (one more step)
 - ❌ Complex UI development (3 implementations)
 - ❌ Not suitable for non-interactive CLI usage

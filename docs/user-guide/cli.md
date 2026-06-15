@@ -22,11 +22,11 @@ masqo redact secrets.log --output clean.log
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--mode` | `redact` | `redact` \| `tokenize` \| `partial` \| `warn` |
-| `--policy` | — | `developer` \| `general` (preset) |
+| `--policy` | - | `developer` \| `general` (preset) |
 | `--format` | `text` | `text` \| `json` |
 | `--output` | stdout | Write to file |
-| `--hook` | — | Non-interactive mode for CI/hooks |
-| `--no-color` | — | Disable colored output |
+| `--hook` | - | Non-interactive mode for CI/hooks |
+| `--no-color` | - | Disable colored output |
 
 **Replacement modes:**
 

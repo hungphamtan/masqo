@@ -42,7 +42,7 @@ export function interceptPaste(
       return
     }
 
-    // Must call preventDefault synchronously — browser inserts paste text after
+    // Must call preventDefault synchronously - browser inserts paste text after
     // the current task completes, so any async await before this is too late.
     event.preventDefault()
     console.debug('[Masqo] paste intercepted on', config.name, '— scanning', text.length, 'chars')
@@ -71,7 +71,7 @@ export function injectSidebar(
   document.getElementById('masqo-sidebar')?.remove()
 
   const sidebarUrl = chrome.runtime.getURL('src/sidebar/index.html')
-  // Use the extension's own origin to scope postMessage — prevents any page
+  // Use the extension's own origin to scope postMessage - prevents any page
   // script from injecting MASQO_ACCEPT and replacing the user's paste content
   const extensionOrigin = chrome.runtime.getURL('').slice(0, -1)
 
@@ -96,7 +96,7 @@ export function injectSidebar(
   document.body.appendChild(container)
 
   iframe.addEventListener('load', () => {
-    // Target origin '*' is acceptable here — the iframe src is already locked
+    // Target origin '*' is acceptable here - the iframe src is already locked
     // to the extension URL. The security boundary that matters is the reverse:
     // the content script only accepts MASQO_ACCEPT/REJECT from extensionOrigin.
     iframe.contentWindow?.postMessage({
@@ -107,11 +107,11 @@ export function injectSidebar(
     }, '*')
   })
 
-  // Named handler so it can be removed after use — prevents listener accumulation
+  // Named handler so it can be removed after use - prevents listener accumulation
   // across multiple paste events
   const msgHandler = (event: MessageEvent) => {
     // Sidebar (chrome-extension://) posts to window.parent (host page context).
-    // event.origin here is the extension origin — validate it.
+    // event.origin here is the extension origin - validate it.
     // If origin doesn't match the extension, ignore.
     if (event.origin !== extensionOrigin) return
     if (event.data?.type === 'MASQO_ACCEPT') {

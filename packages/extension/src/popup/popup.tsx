@@ -134,8 +134,8 @@ function Popup() {
             </select>
             <div style={s.hint}>
               {settings.policy === 'developer'
-                ? 'Secrets + logs — tokenize mode'
-                : 'Secrets + PII — redact mode'}
+                ? 'Secrets + logs - tokenize mode'
+                : 'Secrets + PII - redact mode'}
             </div>
           </div>
 

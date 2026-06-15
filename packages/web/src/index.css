@@ -32,3 +32,27 @@ select, textarea {
 select:focus, textarea:focus { border-color: #6366f1; }
 
 textarea { resize: none; width: 100%; }
+
+/* Mobile responsive */
+.panels-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .panels-grid {
+    grid-template-columns: 1fr;
+  }
+  .panels-grid textarea {
+    height: 160px !important;
+  }
+
+  h1 {
+    font-size: 24px !important;
+  }
+
+  h2 {
+    font-size: 17px !important;
+  }
+}

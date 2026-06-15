@@ -15,7 +15,7 @@ export function detectStripeSecrets(input: string): Detection[] {
       confidence: 0.99,
       pattern: 'sk_live_[A-Za-z0-9]{24,}',
       source: 'detector:secrets/stripe',
-      explanation: 'Detected Stripe live secret key (sk_live_ prefix) — high risk',
+      explanation: 'Detected Stripe live secret key (sk_live_ prefix) - high risk',
       originalText: match[0],
     })
   }

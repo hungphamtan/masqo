@@ -2,7 +2,7 @@
 
 **Local redaction engine for AI workflows.** One privacy engine, many enforcement points.
 
-Detect and mask secrets before they reach AI tools — fully local, zero cloud dependencies.
+Detect and mask secrets before they reach AI tools - fully local, zero cloud dependencies.
 
 ---
 
@@ -85,7 +85,7 @@ Paste secrets into ChatGPT, Claude.ai, or Gemini → sidebar appears → review 
 ```bash
 cd packages/web
 npm run dev      # http://localhost:5173
-npm run build    # dist/ — deploy to any static host
+npm run build    # dist/ - deploy to any static host
 ```
 
 Zero backend. All detection runs in the browser.

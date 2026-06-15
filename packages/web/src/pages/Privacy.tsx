@@ -5,7 +5,7 @@ export function Privacy() {
   return (
     <Layout>
       <h1 style={s.h1}>Privacy Policy</h1>
-      <p style={s.meta}>Effective date: June 2025 · Last updated: June 2025</p>
+      <p style={s.meta}>Effective date: June 2026 · Last updated: June 2026</p>
 
       <p style={s.p}>
         Masqo is built on a single principle: <strong>your data never leaves your device.</strong>{' '}
@@ -39,7 +39,7 @@ export function Privacy() {
         <p style={s.p}>
           The browser extension stores your preferences (active policy, enabled sites, custom sites)
           in Chrome's <code style={s.code}>chrome.storage.sync</code>. This is synced across your
-          Chrome profile by Google if you are signed in to Chrome — this is browser behaviour
+          Chrome profile by Google if you are signed in to Chrome - this is browser behaviour
           outside our control. We store no secrets or scanned content in extension storage.
         </p>
       </Section>
@@ -60,11 +60,11 @@ export function Privacy() {
       <Section title="5. Browser extension permissions">
         <p style={s.p}>The Masqo extension requests the following permissions:</p>
         <ul style={s.ul}>
-          <li><strong>storage</strong> — saves your policy and site preferences locally</li>
-          <li><strong>activeTab / tabs</strong> — reads the current tab URL to show whether Masqo is active on that site</li>
-          <li><strong>clipboardRead / clipboardWrite</strong> — used only when you explicitly trigger a paste action; the extension does not monitor your clipboard passively</li>
-          <li><strong>scripting</strong> — injects the redaction sidebar into supported pages</li>
-          <li><strong>host_permissions: &lt;all_urls&gt;</strong> — allows content scripts to run on any site you add to the site list; the script only activates on hostnames you have configured</li>
+          <li><strong>storage</strong> - saves your policy and site preferences locally</li>
+          <li><strong>activeTab / tabs</strong> - reads the current tab URL to show whether Masqo is active on that site</li>
+          <li><strong>clipboardRead / clipboardWrite</strong> - used only when you explicitly trigger a paste action; the extension does not monitor your clipboard passively</li>
+          <li><strong>scripting</strong> - injects the redaction sidebar into supported pages</li>
+          <li><strong>host_permissions: &lt;all_urls&gt;</strong> - allows content scripts to run on any site you add to the site list; the script only activates on hostnames you have configured</li>
         </ul>
       </Section>
 

@@ -7,7 +7,7 @@ import { installHookCommand } from './commands/install-hook.js'
 
 program
   .name('masqo')
-  .description('Local redaction engine — detect and mask secrets before they leak')
+  .description('Local redaction engine - detect and mask secrets before they leak')
   .version('0.0.0')
 
 program.addCommand(redactCommand)

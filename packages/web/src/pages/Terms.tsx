@@ -5,7 +5,7 @@ export function Terms() {
   return (
     <Layout>
       <h1 style={s.h1}>Terms of Service</h1>
-      <p style={s.meta}>Effective date: June 2025 · Last updated: June 2025</p>
+      <p style={s.meta}>Effective date: June 2026 · Last updated: June 2026</p>
 
       <p style={s.p}>
         By using Masqo (the web app at this domain and/or the browser extension), you agree to

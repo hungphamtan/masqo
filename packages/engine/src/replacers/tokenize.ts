@@ -3,7 +3,7 @@ import type { Detection } from '@masqo/shared'
 const tokenMap = new Map<string, string>()
 const reverseMap = new Map<string, string>()
 
-// FNV-1a 32-bit — fast, browser-compatible, no Node crypto dependency
+// FNV-1a 32-bit - fast, browser-compatible, no Node crypto dependency
 function fnv1a(str: string): string {
   let h = 0x811c9dc5
   for (let i = 0; i < str.length; i++) {

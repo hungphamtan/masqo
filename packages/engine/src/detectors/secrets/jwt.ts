@@ -1,6 +1,6 @@
 import type { Detection } from '@masqo/shared'
 
-// Three base64url segments separated by dots — classic JWT structure
+// Three base64url segments separated by dots - classic JWT structure
 const JWT_PATTERN = /eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+/g
 
 export function detectJwt(input: string): Detection[] {

@@ -45,7 +45,7 @@ export function parsePolicy(json: string): Policy {
     const issues = result.error.issues
       .map((i) => `${i.path.join('.')}: ${i.message}`)
       .join('; ')
-    throw new PolicyParseError(`Policy validation failed — ${issues}`)
+    throw new PolicyParseError(`Policy validation failed - ${issues}`)
   }
 
   for (const rule of result.data.customRules) {
@@ -53,7 +53,7 @@ export function parsePolicy(json: string): Policy {
       new RegExp(rule.pattern)
     } catch {
       throw new PolicyParseError(
-        `Policy validation failed — customRules: invalid regex pattern "${rule.pattern}"`
+        `Policy validation failed - customRules: invalid regex pattern "${rule.pattern}"`
       )
     }
   }

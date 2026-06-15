@@ -17,7 +17,7 @@ function run(args: string): { stdout: string; stderr: string; code: number } {
   return pipe('', args)
 }
 
-describe('redact command — stdin (Task 4.2)', () => {
+describe('redact command - stdin (Task 4.2)', () => {
   it('redacts AWS key from stdin', () => {
     const r = pipe('AWS key: AKIAIOSFODNN7EXAMPLE', 'redact')
     expect(r.code).toBe(0)
