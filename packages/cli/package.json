@@ -1,6 +1,6 @@
 {
   "name": "@masqo/cli",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Local secret redaction engine — detect and mask API keys, tokens, and passwords before they leak",
   "type": "module",
   "publishConfig": {
