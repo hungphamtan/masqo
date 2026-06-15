@@ -1,6 +1,13 @@
 {
   "name": "@masqo/shared",
-  "version": "0.0.0",
+  "version": "0.1.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
