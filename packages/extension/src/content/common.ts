@@ -119,6 +119,8 @@ export function injectSidebar(
       container.remove()
       window.removeEventListener('message', msgHandler)
       onReject()
+    } else if (event.data?.type === 'MASQO_COPY') {
+      navigator.clipboard.writeText(event.data.text as string).catch(() => {})
     }
   }
   window.addEventListener('message', msgHandler)

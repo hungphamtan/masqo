@@ -63,7 +63,7 @@ function Sidebar() {
   }
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(buildOutput()).catch(() => {})
+    window.parent.postMessage({ type: 'MASQO_COPY', text: buildOutput() }, '*')
     setCopied(true)
     setTimeout(() => setCopied(false), 1500)
   }
