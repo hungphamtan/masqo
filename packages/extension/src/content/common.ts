@@ -101,7 +101,6 @@ export function injectSidebar(
       original,
       output: result.output,
       detections: result.detections,
-      extensionOrigin,
     }, extensionOrigin)
   })
 

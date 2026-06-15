@@ -6,7 +6,6 @@ interface ReviewData {
   original: string
   output: string
   detections: Detection[]
-  extensionOrigin?: string
 }
 
 const MONO = '"JetBrains Mono", "Fira Code", ui-monospace, monospace'
@@ -25,7 +24,6 @@ function Sidebar() {
   const [data, setData] = useState<ReviewData | null>(null)
   const [accepted, setAccepted] = useState<Set<number>>(new Set())
   const [copied, setCopied] = useState(false)
-  const [extensionOrigin, setExtensionOrigin] = useState<string>('')
 
   useEffect(() => {
     const handler = (event: MessageEvent) => {
@@ -33,7 +31,6 @@ function Sidebar() {
         const d = event.data as ReviewData & { type: string }
         if (d.original && Array.isArray(d.detections)) {
           setData(d)
-          setExtensionOrigin(d.extensionOrigin || '*')
           setAccepted(new Set(d.detections.map((_, i) => i)))
         }
       }
@@ -62,7 +59,7 @@ function Sidebar() {
   }
 
   const pasteClean = () => {
-    window.parent.postMessage({ type: 'MASQO_ACCEPT', text: buildOutput() }, extensionOrigin)
+    window.parent.postMessage({ type: 'MASQO_ACCEPT', text: buildOutput() }, '*')
   }
 
   const copyToClipboard = () => {
@@ -72,7 +69,7 @@ function Sidebar() {
   }
 
   const reject = () => {
-    window.parent.postMessage({ type: 'MASQO_REJECT' }, extensionOrigin)
+    window.parent.postMessage({ type: 'MASQO_REJECT' }, '*')
   }
 
   if (!data) {
