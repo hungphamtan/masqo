@@ -1,6 +1,6 @@
 {
   "name": "@masqo/extension",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "build": "vite build && node --experimental-strip-types build-content-scripts.mts",
@@ -14,14 +14,14 @@
     "@masqo/shared": "file:../shared",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "@vitejs/plugin-react": "^4.7.0",
+    "@vitejs/plugin-react": "^6.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.260",
     "typescript": "^5.3.3",
-    "vite": "^5.4.21",
-    "vitest": "^1.2.1"
+    "vite": "^8.0.16",
+    "vitest": "^4.1.9"
   }
 }

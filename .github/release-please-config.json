@@ -1,0 +1,42 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "release-type": "node",
+  "bump-minor-pre-major": true,
+  "bump-patch-for-minor-pre-major": true,
+  "include-v-in-tag": true,
+  "include-component-in-tag": false,
+  "separate-pull-requests": false,
+  "plugins": [
+    {
+      "type": "node-workspace",
+      "updatePeerDependencies": true
+    }
+  ],
+  "packages": {
+    ".": {
+      "component": "masqo",
+      "package-name": "masqo",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "packages/shared": {
+      "component": "shared",
+      "package-name": "@masqo/shared"
+    },
+    "packages/engine": {
+      "component": "engine",
+      "package-name": "@masqo/engine"
+    },
+    "packages/cli": {
+      "component": "cli",
+      "package-name": "@masqo/cli"
+    },
+    "packages/web": {
+      "component": "web",
+      "package-name": "@masqo/web"
+    },
+    "packages/extension": {
+      "component": "extension",
+      "package-name": "@masqo/extension"
+    }
+  }
+}

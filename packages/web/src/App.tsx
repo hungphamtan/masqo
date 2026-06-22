@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useRef, useEffect, useMemo } from 'react'
-import { Link } from 'react-router-dom'
 import { createEngine } from '@masqo/engine'
 import { ReplacementMode } from '@masqo/shared'
 import type { Detection } from '@masqo/shared'
+import { Layout } from './pages/Layout.js'
 
 const engine = createEngine()
 
@@ -132,21 +132,8 @@ export function App() {
   const threatCount = detections.filter((d) => confidenceToSeverity(d.confidence) === 'high').length
 
   return (
-    <div style={s.page}>
-      <header style={s.header}>
-        <div style={s.headerInner}>
-          <Link to="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
-            <div style={s.logoMark}>M</div>
-            <span style={s.logoText}>Masqo</span>
-          </Link>
-          <span style={s.tagline}>Local secret redaction - nothing leaves your browser</span>
-          <nav style={s.nav}>
-            <Link to="/how-it-works" style={s.navLink}>How it works</Link>
-          </nav>
-        </div>
-      </header>
-
-      <main style={s.main}>
+    <Layout maxWidth={1200} mainPadding="16px 16px">
+      <div style={s.appContent}>
         {/* Toolbar */}
         <div style={s.toolbar}>
           <div style={s.toolbarGroup}>
@@ -317,33 +304,15 @@ export function App() {
             })}
           </div>
         )}
-      </main>
-
-      <footer style={s.footer}>
-        <span>All processing runs locally in your browser - no data sent to any server.</span>
-        <nav style={{ display: 'flex', gap: 16 }}>
-          <Link to="/how-it-works" style={s.footerLink}>How it works</Link>
-          <Link to="/privacy" style={s.footerLink}>Privacy</Link>
-          <Link to="/terms" style={s.footerLink}>Terms</Link>
-        </nav>
-      </footer>
-    </div>
+      </div>
+    </Layout>
   )
 }
 
-const FONT = '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
 const MONO = '"JetBrains Mono", "Fira Code", "Cascadia Code", ui-monospace, monospace'
 
 const s: Record<string, React.CSSProperties> = {
-  page: { display: 'flex', flexDirection: 'column', minHeight: '100vh', background: '#F8FAFC', fontFamily: FONT },
-  header: { background: '#0F172A', color: '#fff', padding: '0 24px', borderBottom: '1px solid #1E293B' },
-  headerInner: { maxWidth: 1200, margin: '0 auto', display: 'flex', alignItems: 'center', gap: 14, minHeight: 56, flexWrap: 'wrap', padding: '8px 0' },
-  logoMark: { width: 28, height: 28, borderRadius: 6, background: '#E11D48', color: '#fff', fontWeight: 800, fontSize: 15, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: FONT, letterSpacing: '-0.5px', flexShrink: 0 },
-  logoText: { fontWeight: 700, fontSize: 17, color: '#F8FAFC', letterSpacing: '-0.3px' },
-  tagline: { fontSize: 12, color: '#475569', marginLeft: 4, display: 'none' },
-  nav: { marginLeft: 'auto', display: 'flex', gap: 16, flexWrap: 'wrap' },
-  navLink: { fontSize: 13, color: '#94A3B8', textDecoration: 'none' },
-  main: { flex: 1, maxWidth: 1200, margin: '0 auto', width: '100%', padding: '16px 16px', display: 'flex', flexDirection: 'column', gap: 12 },
+  appContent: { display: 'flex', flexDirection: 'column', gap: 12 },
   toolbar: { display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap', background: '#fff', border: '1px solid #E2E8F0', borderRadius: 10, padding: '10px 14px' },
   toolbarGroup: { display: 'flex', alignItems: 'center', gap: 7 },
   toolbarRight: { display: 'flex', alignItems: 'center', gap: 10, marginLeft: 'auto' },
@@ -368,6 +337,4 @@ const s: Record<string, React.CSSProperties> = {
   cardConf: { fontSize: 11, color: '#94A3B8', fontWeight: 600 },
   cardDesc: { fontSize: 12, color: '#475569', lineHeight: 1.4 },
   cardOriginal: { fontSize: 11, fontFamily: MONO, color: '#E11D48', background: '#FFF1F2', padding: '3px 7px', borderRadius: 4, wordBreak: 'break-all' },
-  footer: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 24px', fontSize: 11, color: '#94A3B8', borderTop: '1px solid #E2E8F0', background: '#fff', flexWrap: 'wrap', gap: 8 },
-  footerLink: { color: '#94A3B8', textDecoration: 'none' },
 }

@@ -40,6 +40,15 @@ textarea { resize: none; width: 100%; }
   gap: 12px;
 }
 
+.header-tagline {
+  font-size: 12px;
+  color: #94A3B8;
+  padding-left: 14px;
+  margin-left: 2px;
+  border-left: 1px solid #1E293B;
+  line-height: 1.4;
+}
+
 @media (max-width: 600px) {
   .panels-grid {
     grid-template-columns: 1fr;
@@ -54,5 +63,9 @@ textarea { resize: none; width: 100%; }
 
   h2 {
     font-size: 17px !important;
+  }
+
+  .header-tagline {
+    display: none;
   }
 }

@@ -1,0 +1,8 @@
+{
+  ".": "0.1.1",
+  "packages/shared": "0.1.1",
+  "packages/engine": "0.1.1",
+  "packages/cli": "0.1.1",
+  "packages/web": "0.1.1",
+  "packages/extension": "0.1.1"
+}

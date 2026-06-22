@@ -1,6 +1,6 @@
 {
   "name": "masqo",
-  "version": "0.0.0",
+  "version": "0.1.1",
   "private": true,
   "workspaces": [
     "packages/*",
@@ -22,13 +22,13 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.5",
-    "@typescript-eslint/eslint-plugin": "^6.19.0",
-    "@typescript-eslint/parser": "^6.19.0",
+    "@typescript-eslint/eslint-plugin": "^7.6.0",
+    "@typescript-eslint/parser": "^7.6.0",
     "eslint": "^8.56.0",
     "prettier": "^3.2.4",
-    "turbo": "^1.11.3",
+    "turbo": "^2.9.18",
     "typescript": "^5.3.3",
-    "vitest": "^1.2.1"
+    "vitest": "^4.1.9"
   },
   "packageManager": "npm@10.2.4"
 }
