@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.4](https://github.com/hungphamtan/masqo/compare/v0.1.3...v0.1.4) (2026-06-22)
+
+
+### Bug Fixes
+
+* **extension:** apply CWS pre-submit security fixes ([92b2386](https://github.com/hungphamtan/masqo/commit/92b238674f74273108c2677842a5a22d7d9d4fa7))
+* **extension:** remove &lt;all_urls&gt; and broad host permissions for CWS approval ([ff73633](https://github.com/hungphamtan/masqo/commit/ff73633310205a8123c52a79886f5f90abcf5e40))
+
 ## [0.1.3](https://github.com/hungphamtan/masqo/compare/v0.1.2...v0.1.3) (2026-06-22)
 
 
