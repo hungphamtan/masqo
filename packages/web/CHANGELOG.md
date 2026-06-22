@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.1.3](https://github.com/hungphamtan/masqo/compare/v0.1.2...v0.1.3) (2026-06-22)
+
+
+### Bug Fixes
+
+* **web:** correct GitHub repo URL in header link ([144a410](https://github.com/hungphamtan/masqo/commit/144a410a1bad6d640f4be001a613bae8817e5bca))
+* **web:** correct GitHub repo URL in header link ([90fe78a](https://github.com/hungphamtan/masqo/commit/90fe78a3347ac2c5be0a509db0c6888ab3a4b21e))
+
 ## [0.1.2](https://github.com/hungphamtan/masqo/compare/v0.1.1...v0.1.2) (2026-06-22)
 
 
