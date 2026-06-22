@@ -83,21 +83,6 @@ describe('Storage', () => {
     expect(sites.some((s) => s.id === 'claude')).toBe(false)
   })
 
-  it('addCustomSite appears in getSites', async () => {
-    const { getSites, addCustomSite } = await import('./storage/index.js')
-    await addCustomSite({ id: 'test-site', name: 'Test', hostname: 'test.com', textareaSelector: 'textarea', builtIn: false })
-    const sites = await getSites()
-    expect(sites.some((s) => s.id === 'test-site')).toBe(true)
-  })
-
-  it('removeCustomSite removes it from getSites', async () => {
-    const { getSites, addCustomSite, removeCustomSite } = await import('./storage/index.js')
-    await addCustomSite({ id: 'temp-site', name: 'Temp', hostname: 'temp.com', textareaSelector: 'textarea', builtIn: false })
-    await removeCustomSite('temp-site')
-    const sites = await getSites()
-    expect(sites.some((s) => s.id === 'temp-site')).toBe(false)
-  })
-
   it('detectionHistory stored in chrome.storage.local not sync', async () => {
     const { addDetectionHistory } = await import('./storage/index.js')
     await addDetectionHistory('jwt', 'claude.ai')
@@ -111,22 +96,46 @@ describe('Storage', () => {
     expect(syncData?.['detectionHistory']).toBeUndefined()
   })
 
-  it('filters out invalid customSites from storage on read', async () => {
-    // Inject invalid customSite directly into mock storage
+  it('customSites is always empty (deferred to v0.2.0)', async () => {
     mockStorage['masqo_settings'] = {
       policy: 'general',
       disabledSiteIds: [],
+    }
+    const { getSettings } = await import('./storage/index.js')
+    const s = await getSettings()
+    expect(s.customSites).toEqual([])
+  })
+
+  it('migrates legacy v0.1.1 customSites payload without throwing', async () => {
+    mockStorage['masqo_settings'] = {
+      policy: 'developer',
+      disabledSiteIds: ['claude'],
       customSites: [
-        { id: 'valid', name: 'Valid', hostname: 'valid.com', textareaSelector: 'textarea', builtIn: false },
-        { id: 'bad', name: 'Bad', hostname: 'evil.com/../../../etc/passwd', textareaSelector: 'x'.repeat(501), builtIn: false },
-        'not-an-object',
+        { id: 'x', hostname: 'evil.com' },
         null,
+        'malformed',
+        42,
       ],
     }
     const { getSettings } = await import('./storage/index.js')
     const s = await getSettings()
-    expect(s.customSites).toHaveLength(1)
-    expect(s.customSites[0].id).toBe('valid')
+    expect(s.customSites).toEqual([])
+    expect(s.policy).toBe('developer')
+    expect(s.disabledSiteIds).toEqual(['claude'])
+
+    const migrated = mockStorage['masqo_settings'] as Record<string, unknown>
+    expect('customSites' in migrated).toBe(false)
+    expect(migrated['policy']).toBe('developer')
+    expect(migrated['disabledSiteIds']).toEqual(['claude'])
+  })
+
+  it('handles malformed masqo_settings without crashing', async () => {
+    mockStorage['masqo_settings'] = 'not-an-object'
+    const { getSettings } = await import('./storage/index.js')
+    const s = await getSettings()
+    expect(s.policy).toBe('general')
+    expect(s.disabledSiteIds).toEqual([])
+    expect(s.customSites).toEqual([])
   })
 })
 
@@ -174,7 +183,7 @@ describe('Manifest', () => {
     expect(manifest.version).not.toBe('0.0.0')
   })
 
-  it('manifest uses <all_urls> for broad site support', async () => {
+  it('manifest restricts content_scripts to built-in hostnames only', async () => {
     const { readFileSync } = await import('fs')
     const { resolve } = await import('path')
     const manifest = JSON.parse(
@@ -183,6 +192,17 @@ describe('Manifest', () => {
     const allMatches = manifest.content_scripts
       .flatMap((cs: { matches: string[] }) => cs.matches)
       .join(' ')
-    expect(allMatches).toContain('<all_urls>')
+    expect(allMatches).not.toContain('<all_urls>')
+    expect(allMatches).toContain('chatgpt.com')
+    expect(allMatches).toContain('claude.ai')
+  })
+
+  it('manifest does not request <all_urls> host permission', async () => {
+    const { readFileSync } = await import('fs')
+    const { resolve } = await import('path')
+    const manifest = JSON.parse(
+      readFileSync(resolve(import.meta.dirname, '../public/manifest.json'), 'utf8')
+    )
+    expect(manifest.host_permissions).not.toContain('<all_urls>')
   })
 })

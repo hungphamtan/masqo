@@ -95,12 +95,17 @@ export function injectSidebar(
   container.appendChild(iframe)
   document.body.appendChild(container)
 
+  // Parent (host page) origin — sidebar must use this as targetOrigin when
+  // posting back, preventing leakage if another extension or page reframes us.
+  const parentOrigin = window.location.origin
+
   iframe.addEventListener('load', () => {
     iframe.contentWindow?.postMessage({
       type: 'MASQO_REVIEW_DATA',
       original,
       output: result.output,
       detections: result.detections,
+      parentOrigin,
     }, extensionOrigin)
   })
 

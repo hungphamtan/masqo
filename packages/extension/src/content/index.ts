@@ -8,13 +8,11 @@ async function getActiveSites(): Promise<SiteConfig[]> {
     chrome.storage.sync.get('masqo_settings', (result) => {
       const settings = result['masqo_settings'] as {
         disabledSiteIds?: string[]
-        customSites?: SiteConfig[]
       } | undefined
 
       const disabled = new Set(settings?.disabledSiteIds ?? [])
       const builtIn = BUILT_IN_SITES.filter((s) => !disabled.has(s.id))
-      const custom = settings?.customSites ?? []
-      resolve([...builtIn, ...custom])
+      resolve(builtIn)
     })
   })
 }

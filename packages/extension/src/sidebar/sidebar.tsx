@@ -6,6 +6,7 @@ interface ReviewData {
   original: string
   output: string
   detections: Detection[]
+  parentOrigin: string
 }
 
 const MONO = '"JetBrains Mono", "Fira Code", ui-monospace, monospace'
@@ -29,7 +30,7 @@ function Sidebar() {
     const handler = (event: MessageEvent) => {
       if (event.data?.type === 'MASQO_REVIEW_DATA') {
         const d = event.data as ReviewData & { type: string }
-        if (d.original && Array.isArray(d.detections)) {
+        if (d.original && Array.isArray(d.detections) && typeof d.parentOrigin === 'string') {
           setData(d)
           setAccepted(new Set(d.detections.map((_, i) => i)))
         }
@@ -59,17 +60,20 @@ function Sidebar() {
   }
 
   const pasteClean = () => {
-    window.parent.postMessage({ type: 'MASQO_ACCEPT', text: buildOutput() }, '*')
+    if (!data) return
+    window.parent.postMessage({ type: 'MASQO_ACCEPT', text: buildOutput() }, data.parentOrigin)
   }
 
   const copyToClipboard = () => {
-    window.parent.postMessage({ type: 'MASQO_COPY', text: buildOutput() }, '*')
+    if (!data) return
+    window.parent.postMessage({ type: 'MASQO_COPY', text: buildOutput() }, data.parentOrigin)
     setCopied(true)
     setTimeout(() => setCopied(false), 1500)
   }
 
   const reject = () => {
-    window.parent.postMessage({ type: 'MASQO_REJECT' }, '*')
+    if (!data) return
+    window.parent.postMessage({ type: 'MASQO_REJECT' }, data.parentOrigin)
   }
 
   if (!data) {
