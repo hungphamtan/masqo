@@ -88,9 +88,6 @@ Built with TypeScript. MIT licensed. Contributions welcome.
 ### `storage`
 > Stores your selected policy preset (General / Developer / Default), the list of supported sites you have toggled off, and a local-only history of the last 10 detection types seen (for the popup's "Recent detections" panel). Synced via `chrome.storage.sync` for preferences; detection history uses `chrome.storage.local` and never syncs to Google.
 
-### `clipboardRead`
-> Required to read the text payload at the exact moment the user triggers a paste action on a supported AI chat site. Masqo does not monitor the clipboard passively, at intervals, or on any non-paste event. Reading happens only inside the paste event handler and only on the 11 supported hostnames.
-
 ### `clipboardWrite`
 > Used to write the user-approved redacted version back to the destination input on the supported chat site after the user clicks "Paste clean" in the review panel. Triggered exclusively by an explicit user action in our UI.
 

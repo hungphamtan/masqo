@@ -16,12 +16,22 @@ export async function getSettings(): Promise<StoredSettings> {
     chrome.storage.local.get('masqo_history'),
   ])
 
-  const stored = syncResult['masqo_settings'] as Partial<SyncSettings> | undefined
+  const raw = syncResult['masqo_settings']
+  const stored: Record<string, unknown> | undefined =
+    raw && typeof raw === 'object' && !Array.isArray(raw) ? (raw as Record<string, unknown>) : undefined
   const history = (localResult['masqo_history'] as HistoryEntry[] | undefined) ?? []
 
+  if (stored && 'customSites' in stored) {
+    const migrated: SyncSettings = {
+      policy: typeof stored['policy'] === 'string' ? (stored['policy'] as string) : DEFAULT_SETTINGS.policy,
+      disabledSiteIds: Array.isArray(stored['disabledSiteIds']) ? (stored['disabledSiteIds'] as string[]) : [],
+    }
+    await chrome.storage.sync.set({ masqo_settings: migrated })
+  }
+
   return {
-    policy: stored?.policy ?? DEFAULT_SETTINGS.policy,
-    disabledSiteIds: stored?.disabledSiteIds ?? [],
+    policy: typeof stored?.['policy'] === 'string' ? (stored['policy'] as string) : DEFAULT_SETTINGS.policy,
+    disabledSiteIds: Array.isArray(stored?.['disabledSiteIds']) ? (stored['disabledSiteIds'] as string[]) : [],
     customSites: [],
     detectionHistory: history,
   }

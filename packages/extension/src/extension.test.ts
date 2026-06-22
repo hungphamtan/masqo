@@ -105,6 +105,38 @@ describe('Storage', () => {
     const s = await getSettings()
     expect(s.customSites).toEqual([])
   })
+
+  it('migrates legacy v0.1.1 customSites payload without throwing', async () => {
+    mockStorage['masqo_settings'] = {
+      policy: 'developer',
+      disabledSiteIds: ['claude'],
+      customSites: [
+        { id: 'x', hostname: 'evil.com' },
+        null,
+        'malformed',
+        42,
+      ],
+    }
+    const { getSettings } = await import('./storage/index.js')
+    const s = await getSettings()
+    expect(s.customSites).toEqual([])
+    expect(s.policy).toBe('developer')
+    expect(s.disabledSiteIds).toEqual(['claude'])
+
+    const migrated = mockStorage['masqo_settings'] as Record<string, unknown>
+    expect('customSites' in migrated).toBe(false)
+    expect(migrated['policy']).toBe('developer')
+    expect(migrated['disabledSiteIds']).toEqual(['claude'])
+  })
+
+  it('handles malformed masqo_settings without crashing', async () => {
+    mockStorage['masqo_settings'] = 'not-an-object'
+    const { getSettings } = await import('./storage/index.js')
+    const s = await getSettings()
+    expect(s.policy).toBe('general')
+    expect(s.disabledSiteIds).toEqual([])
+    expect(s.customSites).toEqual([])
+  })
 })
 
 // ── Types / contracts ─────────────────────────────────────────────────────────

@@ -5,7 +5,6 @@
   "description": "Detect and redact secrets before pasting into AI chat tools. All processing runs locally - no data leaves your browser.",
   "permissions": [
     "storage",
-    "clipboardRead",
     "clipboardWrite",
     "activeTab"
   ],
