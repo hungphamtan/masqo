@@ -1,8 +1,8 @@
-# Masqo Ship Plan - v0.1.0
+# Masqo Ship Plan - v0.1.2
 
-> Status: **READY FOR LAUNCH** - all critical security blockers fixed, npm published, web app live
+> Status: **READY FOR CWS SUBMISSION** - all critical security blockers fixed, npm published, web app live, extension scoped to built-in sites only
 >
-> Last reviewed: 2026-06-15
+> Last reviewed: 2026-06-22
 
 ---
 
@@ -10,7 +10,7 @@
 
 | Surface | Description | Status |
 |---|---|---|
-| Chrome Extension | MV3, IIFE content script, 11 built-in AI chat sites, user-managed site list | ⏳ Pending CWS submission (security fixes shipped) |
+| Chrome Extension | MV3, IIFE content script, 11 built-in AI chat sites. Custom user-added sites deferred to v0.2.0 (Shadow DOM rework needed for CWS approval). | ⏳ Pending CWS submission |
 | Web App | Static Vite/React SPA, auto-scan, Privacy / Terms / How it works pages | ✅ Live at masqo.dev |
 | CLI (`@masqo/cli`) | `masqo redact`, `masqo review`, `masqo config`, `masqo install-hook claude-code` | ✅ Live on npm (v0.1.0, v0.1.1) |
 
@@ -56,7 +56,7 @@
   - HSBC Vietnam credit cards have higher success rate but may still fail
 - [ ] Package extension ZIP:
   ```bash
-  cd /Users/Hung/masqo/packages/extension && zip -r ~/masqo-extension-0.1.0.zip dist/
+  cd /Users/Hung/masqo/packages/extension && zip -r ~/masqo-extension-0.1.2.zip dist/
   ```
 - [ ] Prepare listing assets:
   - Promotional tile: 440×280 px
@@ -66,10 +66,12 @@
 - [ ] Fill listing:
   - **Privacy policy URL:** `https://masqo.dev/privacy`
   - **Homepage URL:** `https://masqo.dev`
-- [ ] Write `<all_urls>` host permission justification:
-  > "Masqo's content script activates on any hostname the user adds to their custom site list. Without `<all_urls>`, users cannot protect arbitrary internal tools or AI interfaces beyond the built-in list."
 - [ ] Write `clipboardRead` permission justification:
-  > "Masqo reads clipboard content only at the moment the user triggers a paste action. It does not monitor the clipboard passively or at any other time."
+  > "Masqo reads clipboard content only at the moment the user triggers a paste action on a supported AI chat site. It does not monitor the clipboard passively or at any other time."
+- [ ] Write `activeTab` permission justification:
+  > "Used solely by the popup to display whether the current tab is a supported AI chat site. No tab data is stored or transmitted."
+- [ ] Write host permissions justification:
+  > "Each host in host_permissions corresponds to a supported AI chat interface where Masqo intercepts paste events to scan for secrets before they are sent. No network requests are made from these origins."
 - [ ] Complete Privacy Practices questionnaire in developer dashboard
 - [ ] Submit ZIP → allow 1–3 business days for review
 

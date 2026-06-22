@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
-import { getSettings, setPolicy, clearHistory, getSites, addCustomSite, removeCustomSite, toggleSiteEnabled } from '../storage/index.js'
+import { getSettings, setPolicy, clearHistory, getSites, toggleSiteEnabled } from '../storage/index.js'
 import { BUILT_IN_SITES } from '../sites.js'
 import type { SiteConfig } from '../sites.js'
 import type { StoredSettings } from '../types.js'
@@ -19,15 +19,11 @@ function Popup() {
   const [tab, setTab] = useState<Tab>('policy')
   const [sites, setSites] = useState<SiteConfig[]>([])
   const [disabledIds, setDisabledIds] = useState<Set<string>>(new Set())
-  const [customSites, setCustomSites] = useState<SiteConfig[]>([])
-  const [newName, setNewName] = useState('')
-  const [newHostname, setNewHostname] = useState('')
 
   useEffect(() => {
     getSettings().then((s) => {
       setSettings(s)
       setDisabledIds(new Set(s.disabledSiteIds ?? []))
-      setCustomSites(s.customSites ?? [])
     })
     getSites().then(setSites)
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -60,25 +56,6 @@ function Popup() {
     getSites().then(setSites)
   }
 
-  const handleRemoveCustom = async (id: string) => {
-    await removeCustomSite(id)
-    setCustomSites((prev) => prev.filter((s) => s.id !== id))
-    getSites().then(setSites)
-  }
-
-  const handleAddSite = async () => {
-    const name = newName.trim()
-    const hostname = newHostname.trim().replace(/^https?:\/\//, '').replace(/\/$/, '')
-    if (!name || !hostname) return
-    const id = `custom-${hostname.replace(/\./g, '-')}-${Date.now()}`
-    const site: SiteConfig = { id, name, hostname, textareaSelector: 'textarea, [contenteditable="true"]', builtIn: false }
-    await addCustomSite(site)
-    setCustomSites((prev) => [...prev, site])
-    getSites().then(setSites)
-    setNewName('')
-    setNewHostname('')
-  }
-
   if (!settings) {
     return (
       <div style={{ ...s.root, display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: 120 }}>
@@ -88,8 +65,7 @@ function Popup() {
   }
 
   const isSupported = activeHost
-    ? SUPPORTED_HOSTS.some((h) => activeHost === h || activeHost.endsWith('.' + h)) ||
-      customSites.some((cs) => activeHost === cs.hostname || activeHost.endsWith('.' + cs.hostname))
+    ? SUPPORTED_HOSTS.some((h) => activeHost === h || activeHost.endsWith('.' + h))
     : true
 
   return (
@@ -189,29 +165,7 @@ function Popup() {
             })}
           </div>
 
-          {customSites.length > 0 && (
-            <>
-              <div style={{ ...s.fieldLabel, marginTop: 12 }}>Custom sites</div>
-              <div style={s.siteList}>
-                {customSites.map((site) => (
-                  <div key={site.id} style={s.siteRow}>
-                    <div style={{ minWidth: 0 }}>
-                      <div style={s.siteName}>{site.name}</div>
-                      <div style={s.siteHost}>{site.hostname}</div>
-                    </div>
-                    <button onClick={() => handleRemoveCustom(site.id)} style={s.removeBtn}>✕</button>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-
-          <div style={{ ...s.fieldLabel, marginTop: 14 }}>Add site</div>
-          <input type="text" placeholder="Name (e.g. Grok)" value={newName} onChange={(e) => setNewName(e.target.value)} style={s.input} />
-          <input type="text" placeholder="Hostname (e.g. grok.com)" value={newHostname} onChange={(e) => setNewHostname(e.target.value)} style={{ ...s.input, marginTop: 6 }} onKeyDown={(e) => e.key === 'Enter' && handleAddSite()} />
-          <button onClick={handleAddSite} disabled={!newName.trim() || !newHostname.trim()} style={{ ...s.addBtn, opacity: (!newName.trim() || !newHostname.trim()) ? 0.4 : 1 }}>
-            Add site
-          </button>
+          <div style={s.hint}>Custom sites are coming in a future release.</div>
         </div>
       )}
     </div>
