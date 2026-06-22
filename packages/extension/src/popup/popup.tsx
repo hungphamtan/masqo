@@ -98,7 +98,10 @@ function Popup() {
       <div style={s.header}>
         <div style={s.headerLeft}>
           <div style={s.logoMark}>M</div>
-          <span style={s.logoText}>Masqo</span>
+          <div>
+            <span style={s.logoText}>Masqo</span>
+            <div style={s.tagline}>All processing runs locally - no data leaves your browser.</div>
+          </div>
         </div>
         {saved && <span style={s.savedBadge}>Saved ✓</span>}
       </div>
@@ -221,6 +224,7 @@ const s: Record<string, React.CSSProperties> = {
   headerLeft: { display: 'flex', alignItems: 'center', gap: 8 },
   logoMark: { width: 24, height: 24, borderRadius: 5, background: '#E11D48', color: '#fff', fontWeight: 800, fontSize: 13, display: 'flex', alignItems: 'center', justifyContent: 'center' },
   logoText: { fontWeight: 700, fontSize: 15, color: '#F8FAFC', letterSpacing: '-0.2px' },
+  tagline: { fontSize: 9, color: '#94A3B8', marginTop: 2, lineHeight: 1.3 },
   savedBadge: { fontSize: 11, color: '#4ADE80', fontWeight: 600 },
   notice: { background: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: 0, padding: '10px 14px', fontSize: 12, lineHeight: 1.6, color: '#78350F', borderLeft: '3px solid #F59E0B' },
   tabs: { display: 'flex', borderBottom: '1px solid #F1F5F9' },
