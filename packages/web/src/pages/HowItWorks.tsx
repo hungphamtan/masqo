@@ -103,7 +103,7 @@ export function HowItWorks() {
             <td style={s.td}>Medium+</td>
             <td style={s.td}>Disabled</td>
             <td style={s.td}>Redact</td>
-            <td style={s.td}>Documents and messages — catches emails, phones, SSNs alongside secrets</td>
+            <td style={s.td}>Documents and messages - catches emails, phones, SSNs alongside secrets</td>
           </tr>
           <tr>
             <td style={s.td}><strong>Developer</strong></td>
@@ -111,7 +111,7 @@ export function HowItWorks() {
             <td style={s.td}>Disabled</td>
             <td style={s.td}>Medium+</td>
             <td style={s.td}>Tokenize</td>
-            <td style={s.td}>Sharing code, logs, stack traces — skips PII, keeps stable placeholders</td>
+            <td style={s.td}>Sharing code, logs, stack traces - skips PII, keeps stable placeholders</td>
           </tr>
           <tr>
             <td style={s.td}><strong>Default</strong></td>
@@ -119,7 +119,7 @@ export function HowItWorks() {
             <td style={s.td}>All confidence</td>
             <td style={s.td}>All confidence</td>
             <td style={s.td}>Your choice</td>
-            <td style={s.td}>All detectors, no filtering — maximum coverage</td>
+            <td style={s.td}>All detectors, no filtering - maximum coverage</td>
           </tr>
         </tbody>
       </table>
