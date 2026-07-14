@@ -2,66 +2,59 @@
 
 ## Short description (132 char max)
 
-> Detect and redact API keys, tokens, and secrets before pasting into AI chats. Runs 100% locally — no data ever leaves your browser.
+> Detect and redact API keys, tokens, and secrets before pasting into AI chat sites. Runs 100% locally - no data leaves your browser.
 
-**Length: 128 chars** ✓
+**Length: 130 chars** ✓
 
 ---
 
 ## Full description
 
 ```
-Masqo intercepts paste events on AI chat interfaces and scans the text for secrets — API keys, JWTs, database connection strings, private keys, and 20+ other patterns — before it reaches the model.
+Masqo intercepts paste events on AI chat interfaces and scans the text for secrets - API keys, JWTs, database connection strings, private keys, and 20+ other patterns - before it reaches the model.
 
 Everything runs locally in your browser. No accounts. No servers. No telemetry. The extension never reads your clipboard passively; it only scans text at the exact moment you paste into a supported site.
 
 ╋ HOW IT WORKS
-
-1. You paste into ChatGPT, Claude, Gemini, Grok, Perplexity, or another supported chat
+1. You paste into a supported AI chat site
 2. Masqo's detection engine scans the text using deterministic pattern rules + entropy heuristics
 3. A review panel appears showing each detection with type, confidence score, and a preview
 4. You accept, reject, or toggle each finding individually
-5. Click "Paste clean" — only the redacted version is inserted
+5. Click "Paste clean" - only the redacted version is inserted
 
 ╋ WHAT IT DETECTS
-
-• AWS access & secret keys
-• GCP service account keys
-• GitHub & GitLab tokens
-• Stripe, OpenAI, Anthropic API keys
+• Cloud provider access & secret keys
+• Cloud service account keys
+• Source control platform tokens
+• Payment processor & AI provider API keys
 • Bearer tokens & JWTs
-• Database connection strings (PostgreSQL, MySQL, MongoDB, Redis)
+• Database connection strings (SQL & NoSQL)
 • Private keys (RSA, EC, SSH)
 • HTTP Basic Auth credentials
 • Cookie headers
 • .env secret assignments
-• Slack, Twilio, Sendgrid keys
-• npm & PyPI tokens
+• Messaging & email service API keys
+• Package registry tokens
 • Stack traces with embedded tokens
 • HTTP request headers
 • Email addresses, phone numbers, SSNs, credit cards, public IPs
 
 ╋ POLICIES
-
 Pick the policy that matches your workflow:
-
 • General (default): Secrets + PII, medium-confidence threshold
 • Developer: Secrets + logs only, tokenize mode (stable placeholders for AI context)
 • Default: All detectors, all confidence levels, maximum coverage
 
 ╋ REPLACEMENT MODES
-
 • Redact: Replace with [REDACTED:type]
 • Tokenize: Replace with stable [JWT_1] placeholders for AI-readable structure
 • Partial: Show first/last characters, mask the middle
 • Warn only: Flag without changing output
 
 ╋ SUPPORTED SITES
-
-ChatGPT, Claude, Gemini, Grok, Perplexity, Manus, Poe, Microsoft Copilot, You.com, Character.AI, plus legacy chat.openai.com.
+Works on major AI chat interfaces. Full list of supported origins in our GitHub repo.
 
 ╋ PRIVACY GUARANTEE
-
 Masqo does not:
 ✗ Send your text to any server
 ✗ Read your clipboard outside of paste events
@@ -72,7 +65,6 @@ Masqo does not:
 All detection rules and the redaction engine are bundled into the extension itself. The only network access Chrome grants this extension is for the extension's own update channel managed by the Chrome Web Store.
 
 ╋ OPEN SOURCE
-
 Source code: https://github.com/hungphamtan/masqo
 Web demo: https://masqo.dev
 Privacy policy: https://masqo.dev/privacy
@@ -95,7 +87,7 @@ Built with TypeScript. MIT licensed. Contributions welcome.
 > Used only by the popup UI to check whether the currently active tab is a supported AI chat site, so the popup can show an "active" indicator. No tab data is stored, transmitted, or read beyond the hostname at the moment the user opens the popup.
 
 ### Host permissions (11 specific origins)
-> Each entry in `host_permissions` corresponds to one supported AI chat interface (ChatGPT, Claude, Gemini, Grok, Perplexity, Manus, Poe, Microsoft Copilot, You.com, Character.AI, plus legacy chat.openai.com). Required to inject the paste-event listener and the inline review panel into the page. Masqo does not make any network requests from these origins — it only reads the user's own paste input and writes the redacted version back to the same input.
+> Each entry in `host_permissions` corresponds to one supported AI chat interface (ChatGPT, Claude, Gemini, Grok, Perplexity, Manus, Poe, Microsoft Copilot, You.com, Character.AI, plus legacy chat.openai.com). Required to inject the paste-event listener and the inline review panel into the page. Masqo does not make any network requests from these origins - it only reads the user's own paste input and writes the redacted version back to the same input.
 
 ---
 

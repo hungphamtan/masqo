@@ -1,6 +1,6 @@
 # @masqo/engine
 
-Core detection and redaction engine for Masqo. Runs entirely locally — no network calls, no telemetry.
+Core detection and redaction engine for Masqo. Runs entirely locally - no network calls, no telemetry.
 
 Used by `@masqo/cli`, the Masqo browser extension, and the Masqo web app.
 

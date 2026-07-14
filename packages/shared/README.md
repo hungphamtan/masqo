@@ -6,8 +6,8 @@ This package is an internal dependency used by `@masqo/engine` and `@masqo/cli`.
 
 ## Packages that use this
 
-- [`@masqo/engine`](https://www.npmjs.com/package/@masqo/engine) — detection and redaction core
-- [`@masqo/cli`](https://www.npmjs.com/package/@masqo/cli) — CLI and Claude Code hook
+- [`@masqo/engine`](https://www.npmjs.com/package/@masqo/engine) - detection and redaction core
+- [`@masqo/cli`](https://www.npmjs.com/package/@masqo/cli) - CLI and Claude Code hook
 
 ## Links
 
