@@ -1,5 +1,6 @@
 import React from 'react'
 import { Layout } from './Layout.js'
+import { Link } from 'react-router-dom'
 
 export function HowItWorks() {
   return (
@@ -29,6 +30,7 @@ export function HowItWorks() {
           Accepted matches are replaced with <code style={s.code}>[REDACTED:type]</code> tokens.
         </Step>
       </div>
+      <Link to="/how-it-works/web-app" style={s.seeMore}>See the editor flow →</Link>
 
       <h2 style={s.h2}>Detection modes</h2>
       <table style={s.table}>
@@ -136,7 +138,88 @@ export function HowItWorks() {
         in your browser. The extension never reads your clipboard passively - it only scans text at
         the moment you paste.
       </p>
+      <Link to="/how-it-works/extension" style={s.seeMore}>See the extension flow →</Link>
+
+      <div style={s.cta}>
+        <div style={s.ctaBody}>
+          <div style={s.ctaTitle}>Redact secrets everywhere you chat with AI</div>
+          <div style={s.ctaText}>
+            Install the Chrome extension to catch API keys, tokens, and PII the moment you paste -
+            before they reach ChatGPT, Claude, Gemini and more.
+          </div>
+          <div style={s.ctaTrust}>Free · Runs 100% locally · Same engine as this page</div>
+        </div>
+        <a
+          href="https://chromewebstore.google.com/detail/masqo-secret-redaction/mfeaahjddfafgbckbilbbagbhpakhdap"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={s.ctaBtn}
+        >
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" /><circle cx="12" cy="12" r="4" /><line x1="21.17" y1="8" x2="12" y2="8" /><line x1="3.95" y1="6.06" x2="8.54" y2="14" /><line x1="10.88" y1="21.94" x2="15.46" y2="14" />
+          </svg>
+          Add to Chrome - it's free
+        </a>
+      </div>
+
+      <h2 style={s.h2}>Claude Code hook &amp; CLI</h2>
+      <p style={s.p}>
+        Prefer to redact at the file system boundary? The <code style={s.code}>@masqo/cli</code> installs a
+        Claude Code hook that scans every file write for secrets <em>before</em> they reach the AI - no
+        copy-paste required.
+      </p>
+      <p style={s.p}>Install the CLI globally:</p>
+      <pre style={s.codeBlock}>npm install -g @masqo/cli</pre>
+      <p style={s.p}>Wire it into Claude Code with one command:</p>
+      <pre style={s.codeBlock}>masqo install-hook claude-code</pre>
+      <p style={s.p}>
+        This adds a <code style={s.code}>PreToolUse</code> hook to <code style={s.code}>~/.claude/settings.json</code> that
+        runs on every <code style={s.code}>Write</code>, <code style={s.code}>Edit</code>, and{' '}
+        <code style={s.code}>MultiEdit</code> call. If secrets are found, Claude Code sees the redacted
+        output instead of the raw file. Overhead is under 100ms for typical files.
+      </p>
+      <p style={s.p}>You can also run it standalone on any text or file:</p>
+      <pre style={s.codeBlock}>{`# Redact from stdin
+echo "sk-proj-abc123..." | masqo redact
+
+# Redact a file, write clean output
+masqo redact secret.txt -o redacted.txt
+
+# Interactive review before redacting
+masqo review secret.txt
+
+# Set default replacement mode: redact | tokenize | partial | warn
+masqo config --mode tokenize`}</pre>
+      <Link to="/how-it-works/cli" style={s.seeMore}>See the hook flow →</Link>
+
+      <h2 style={s.h2}>npm packages</h2>
+      <p style={s.p}>
+        Masqo is open and modular. Every surface shares one engine, published on npm under the{' '}
+        <a href="https://www.npmjs.com/search?q=%40masqo" target="_blank" rel="noopener noreferrer" style={s.link}>@masqo</a>{' '}
+        scope - so you can embed the same detection in your own tools, pipelines, or CI.
+      </p>
+      <div style={s.pkgGrid}>
+        <PkgCard name="@masqo/cli" desc="Command-line redaction and the Claude Code hook installer. The fastest way to protect a dev workflow." />
+        <PkgCard name="@masqo/engine" desc="The core detection and replacement engine. Deterministic detectors, configurable modes - drop it into any Node or browser project." />
+        <PkgCard name="@masqo/shared" desc="Shared types, policies, and constants used across every Masqo surface. Import it to build on the same contracts." />
+      </div>
+      <Link to="/how-it-works/engine" style={s.seeMore}>See how to embed the engine →</Link>
     </Layout>
+  )
+}
+
+function PkgCard({ name, desc }: { name: string; desc: string }) {
+  return (
+    <a
+      href={`https://www.npmjs.com/package/${name}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={pkg.card}
+    >
+      <div style={pkg.name}>{name}</div>
+      <div style={pkg.desc}>{desc}</div>
+      <div style={pkg.link}>View on npm →</div>
+    </a>
   )
 }
 
@@ -164,6 +247,23 @@ const s: Record<string, React.CSSProperties> = {
   code: { fontFamily: 'monospace', background: '#f1f5f9', padding: '1px 5px', borderRadius: 3, fontSize: 12, color: '#dc2626' },
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 8 },
   chip: { background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 6, padding: '7px 12px', fontSize: 13, color: '#166534' },
+  link: { color: '#E11D48', textDecoration: 'none', fontWeight: 600 },
+  seeMore: { display: 'inline-block', fontSize: 14, color: '#E11D48', textDecoration: 'none', fontWeight: 600, marginTop: 4 },
+  cta: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap', background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)', borderRadius: 14, padding: '24px 28px', marginTop: 24 },
+  ctaBody: { flex: '1 1 320px', minWidth: 0 },
+  ctaTitle: { fontSize: 18, fontWeight: 700, color: '#F8FAFC', marginBottom: 8 },
+  ctaText: { fontSize: 14, color: '#CBD5E1', lineHeight: 1.6, marginBottom: 10, maxWidth: 460 },
+  ctaTrust: { fontSize: 12, color: '#94A3B8', fontWeight: 600 },
+  ctaBtn: { display: 'inline-flex', alignItems: 'center', gap: 9, background: '#E11D48', color: '#fff', textDecoration: 'none', fontWeight: 700, fontSize: 15, padding: '13px 22px', borderRadius: 8, whiteSpace: 'nowrap', flexShrink: 0 },
+  codeBlock: { background: '#0F172A', color: '#E2E8F0', fontFamily: 'monospace', fontSize: 13, lineHeight: 1.6, padding: '14px 16px', borderRadius: 8, overflowX: 'auto', margin: '0 0 16px', whiteSpace: 'pre' },
+  pkgGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: 12 },
+}
+
+const pkg: Record<string, React.CSSProperties> = {
+  card: { display: 'flex', flexDirection: 'column', gap: 8, background: '#fff', border: '1px solid #E2E8F0', borderRadius: 10, padding: '16px 18px', textDecoration: 'none', transition: 'border-color 0.15s' },
+  name: { fontFamily: 'monospace', fontSize: 14, fontWeight: 700, color: '#1e293b' },
+  desc: { fontSize: 13, color: '#475569', lineHeight: 1.55, flex: 1 },
+  link: { fontSize: 13, fontWeight: 600, color: '#E11D48' },
 }
 
 const step: Record<string, React.CSSProperties> = {
