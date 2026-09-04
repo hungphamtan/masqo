@@ -13,24 +13,24 @@ export function FeatureMedia({
   transcript: React.ReactNode
   showVideo?: boolean
 }) {
+  if (!showVideo) return null
+
   return (
     <div style={s.wrap}>
-      {showVideo && (
-        <video
-          className="feature-video"
-          controls
-          preload="none"
-          poster={poster}
-          style={s.video}
-        >
-          <source src={`${src}.webm`} type="video/webm" />
-          <source src={`${src}.mp4`} type="video/mp4" />
-          {captionsSrc && (
-            <track kind="captions" src={captionsSrc} srcLang="en" label="English" default />
-          )}
-          Your browser does not support embedded video. Read the transcript below.
-        </video>
-      )}
+      <video
+        className="feature-video"
+        controls
+        preload="none"
+        poster={poster}
+        style={s.video}
+      >
+        <source src={`${src}.webm`} type="video/webm" />
+        <source src={`${src}.mp4`} type="video/mp4" />
+        {captionsSrc && (
+          <track kind="captions" src={captionsSrc} srcLang="en" label="English" default />
+        )}
+        Your browser does not support embedded video. Read the transcript below.
+      </video>
       <details style={s.details}>
         <summary style={s.summary}>Text description / transcript</summary>
         <div style={s.transcript}>{transcript}</div>

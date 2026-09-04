@@ -35,8 +35,8 @@ export function FlowDiagram({ title, desc, steps }: { title: string; desc: strin
               </text>
               {i < steps.length - 1 && (
                 <g>
-                  <line x1={x + boxW} y1={4 + boxH / 2} x2={x + boxW + gap} y2={4 + boxH / 2} stroke="#94A3B8" strokeWidth="3" />
-                  <polygon points={`${x + boxW + gap},${4 + boxH / 2} ${x + boxW + gap - 9},${4 + boxH / 2 - 6} ${x + boxW + gap - 9},${4 + boxH / 2 + 6}`} fill="#94A3B8" />
+                  <line x1={x + boxW} y1={4 + boxH / 2} x2={x + boxW + gap} y2={4 + boxH / 2} stroke="#FDA4AF" strokeWidth="3" />
+                  <polygon points={`${x + boxW + gap},${4 + boxH / 2} ${x + boxW + gap - 9},${4 + boxH / 2 - 6} ${x + boxW + gap - 9},${4 + boxH / 2 + 6}`} fill="#FDA4AF" />
                 </g>
               )}
             </g>
