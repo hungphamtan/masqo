@@ -47,4 +47,12 @@ describe('Visual detail pages', () => {
     expect(src).toContain('.webm')
     expect(src).toContain('.mp4')
   })
+
+  it('DetailPage links back to /how-it-works and renders one h1', () => {
+    const src = read('./components/DetailPage.tsx')
+    expect(src).toContain('/how-it-works')
+    expect(src).toContain('<h1')
+    expect(src).toContain('FlowDiagram')
+    expect(src).toContain('FeatureMedia')
+  })
 })
