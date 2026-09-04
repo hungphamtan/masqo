@@ -65,4 +65,15 @@ describe('Visual detail pages', () => {
     expect(ext).toContain('export function ExtensionDetail')
     expect(ext).toContain('chromewebstore.google.com')
   })
+
+  it('Cli + Engine detail pages exist and use DetailPage', () => {
+    const cli = read('./pages/how-it-works/Cli.tsx')
+    const eng = read('./pages/how-it-works/Engine.tsx')
+    expect(cli).toContain('export function CliDetail')
+    expect(cli).toContain('install-hook claude-code')
+    expect(cli).toContain('npmjs.com/package/@masqo/cli')
+    expect(eng).toContain('export function EngineDetail')
+    expect(eng).toContain('createEngine')
+    expect(eng).toContain('npmjs.com/package/@masqo/engine')
+  })
 })
