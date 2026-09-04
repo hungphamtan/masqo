@@ -57,6 +57,12 @@ textarea { resize: none; width: 100%; }
     height: 160px !important;
   }
 
+  /* iOS Safari auto-zooms on focus when font-size < 16px. Force 16px on
+     inputs (overrides inline styles) to prevent the zoom-in on paste. */
+  textarea, select, input {
+    font-size: 16px !important;
+  }
+
   h1 {
     font-size: 24px !important;
   }
