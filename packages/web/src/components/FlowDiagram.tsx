@@ -29,14 +29,14 @@ export function FlowDiagram({ title, desc, steps }: { title: string; desc: strin
           const x = i * (boxW + gap)
           return (
             <g key={i}>
-              <rect x={x} y={4} width={boxW} height={boxH} rx={10} fill="#0F172A" />
+              <rect x={x} y={4} width={boxW} height={boxH} rx={10} fill="#E11D48" />
               <text x={x + boxW / 2} y={4 + boxH / 2 + 5} textAnchor="middle" fill="#F8FAFC" fontSize="15" fontWeight="700" fontFamily="-apple-system, sans-serif">
                 {step.label}
               </text>
               {i < steps.length - 1 && (
                 <g>
-                  <line x1={x + boxW} y1={4 + boxH / 2} x2={x + boxW + gap} y2={4 + boxH / 2} stroke="#E11D48" strokeWidth="3" />
-                  <polygon points={`${x + boxW + gap},${4 + boxH / 2} ${x + boxW + gap - 9},${4 + boxH / 2 - 6} ${x + boxW + gap - 9},${4 + boxH / 2 + 6}`} fill="#E11D48" />
+                  <line x1={x + boxW} y1={4 + boxH / 2} x2={x + boxW + gap} y2={4 + boxH / 2} stroke="#94A3B8" strokeWidth="3" />
+                  <polygon points={`${x + boxW + gap},${4 + boxH / 2} ${x + boxW + gap - 9},${4 + boxH / 2 - 6} ${x + boxW + gap - 9},${4 + boxH / 2 + 6}`} fill="#94A3B8" />
                 </g>
               )}
             </g>

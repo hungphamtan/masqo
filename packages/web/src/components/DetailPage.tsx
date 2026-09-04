@@ -8,7 +8,7 @@ export interface DetailPageProps {
   title: string
   lead: string
   diagram: { title: string; desc: string; steps: { label: string; caption: string }[] }
-  media: { src: string; poster?: string; transcript: React.ReactNode }
+  media: { src: string; poster?: string; transcript: React.ReactNode; showVideo?: boolean }
   children?: React.ReactNode
   cta?: { label: string; href: string; external?: boolean }
 }
@@ -20,7 +20,7 @@ export function DetailPage({ title, lead, diagram, media, children, cta }: Detai
       <h1 style={s.h1}>{title}</h1>
       <p style={s.lead}>{lead}</p>
 
-      <FeatureMedia src={media.src} poster={media.poster} transcript={media.transcript} />
+      <FeatureMedia src={media.src} poster={media.poster} transcript={media.transcript} showVideo={media.showVideo} />
       <FlowDiagram title={diagram.title} desc={diagram.desc} steps={diagram.steps} />
 
       {children}
