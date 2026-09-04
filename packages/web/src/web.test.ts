@@ -37,4 +37,14 @@ describe('Visual detail pages', () => {
     // redundant visible ordered list so meaning is not SVG-only
     expect(src).toContain('<ol')
   })
+
+  it('FeatureMedia has captions slot, transcript, no autoplay, lazy preload', () => {
+    const src = read('./components/FeatureMedia.tsx')
+    expect(src).toContain('kind="captions"')
+    expect(src).toContain('<details')
+    expect(src).toContain('preload="none"')
+    expect(src).not.toContain('autoPlay')
+    expect(src).toContain('.webm')
+    expect(src).toContain('.mp4')
+  })
 })
