@@ -55,4 +55,14 @@ describe('Visual detail pages', () => {
     expect(src).toContain('FlowDiagram')
     expect(src).toContain('FeatureMedia')
   })
+
+  it('WebApp + Extension detail pages exist and use DetailPage', () => {
+    const web = read('./pages/how-it-works/WebApp.tsx')
+    const ext = read('./pages/how-it-works/Extension.tsx')
+    expect(web).toContain('DetailPage')
+    expect(web).toContain('export function WebAppDetail')
+    expect(ext).toContain('DetailPage')
+    expect(ext).toContain('export function ExtensionDetail')
+    expect(ext).toContain('chromewebstore.google.com')
+  })
 })
