@@ -24,3 +24,17 @@ describe('Web app', () => {
     expect(result.detections.length).toBeGreaterThan(0)
   })
 })
+
+describe('Visual detail pages', () => {
+  const read = (p: string) => readFileSync(resolve(import.meta.dirname, p), 'utf8')
+
+  it('FlowDiagram is accessible (role img + title/desc + text list)', () => {
+    const src = read('./components/FlowDiagram.tsx')
+    expect(src).toContain('role="img"')
+    expect(src).toContain('aria-labelledby')
+    expect(src).toContain('<title')
+    expect(src).toContain('<desc')
+    // redundant visible ordered list so meaning is not SVG-only
+    expect(src).toContain('<ol')
+  })
+})
