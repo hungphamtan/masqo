@@ -1,5 +1,6 @@
 import React from 'react'
 import { Layout } from './Layout.js'
+import { Link } from 'react-router-dom'
 
 export function HowItWorks() {
   return (
@@ -29,6 +30,7 @@ export function HowItWorks() {
           Accepted matches are replaced with <code style={s.code}>[REDACTED:type]</code> tokens.
         </Step>
       </div>
+      <Link to="/how-it-works/web-app" style={s.seeMore}>See the editor flow →</Link>
 
       <h2 style={s.h2}>Detection modes</h2>
       <table style={s.table}>
@@ -136,6 +138,7 @@ export function HowItWorks() {
         in your browser. The extension never reads your clipboard passively - it only scans text at
         the moment you paste.
       </p>
+      <Link to="/how-it-works/extension" style={s.seeMore}>See the extension flow →</Link>
 
       <div style={s.cta}>
         <div style={s.ctaBody}>
@@ -187,6 +190,7 @@ masqo review secret.txt
 
 # Set default replacement mode: redact | tokenize | partial | warn
 masqo config --mode tokenize`}</pre>
+      <Link to="/how-it-works/cli" style={s.seeMore}>See the hook flow →</Link>
 
       <h2 style={s.h2}>npm packages</h2>
       <p style={s.p}>
@@ -199,6 +203,7 @@ masqo config --mode tokenize`}</pre>
         <PkgCard name="@masqo/engine" desc="The core detection and replacement engine. Deterministic detectors, configurable modes - drop it into any Node or browser project." />
         <PkgCard name="@masqo/shared" desc="Shared types, policies, and constants used across every Masqo surface. Import it to build on the same contracts." />
       </div>
+      <Link to="/how-it-works/engine" style={s.seeMore}>See how to embed the engine →</Link>
     </Layout>
   )
 }
@@ -243,6 +248,7 @@ const s: Record<string, React.CSSProperties> = {
   grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: 8 },
   chip: { background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 6, padding: '7px 12px', fontSize: 13, color: '#166534' },
   link: { color: '#E11D48', textDecoration: 'none', fontWeight: 600 },
+  seeMore: { display: 'inline-block', fontSize: 14, color: '#E11D48', textDecoration: 'none', fontWeight: 600, marginTop: 4 },
   cta: { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap', background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 100%)', borderRadius: 14, padding: '24px 28px', marginTop: 24 },
   ctaBody: { flex: '1 1 320px', minWidth: 0 },
   ctaTitle: { fontSize: 18, fontWeight: 700, color: '#F8FAFC', marginBottom: 8 },

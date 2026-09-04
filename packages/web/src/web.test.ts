@@ -76,4 +76,15 @@ describe('Visual detail pages', () => {
     expect(eng).toContain('createEngine')
     expect(eng).toContain('npmjs.com/package/@masqo/engine')
   })
+
+  it('routes are wired and overview links to detail pages', () => {
+    const main = read('./main.tsx')
+    expect(main).toContain('/how-it-works/web-app')
+    expect(main).toContain('/how-it-works/extension')
+    expect(main).toContain('/how-it-works/cli')
+    expect(main).toContain('/how-it-works/engine')
+    const hiw = read('./pages/HowItWorks.tsx')
+    expect(hiw).toContain('/how-it-works/extension')
+    expect(hiw).toContain('/how-it-works/cli')
+  })
 })

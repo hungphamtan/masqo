@@ -1,4 +1,3 @@
-import React from 'react'
 import { DetailPage } from '../../components/DetailPage.js'
 
 export function ExtensionDetail() {

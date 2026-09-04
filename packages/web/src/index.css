@@ -63,6 +63,10 @@ textarea { resize: none; width: 100%; }
     font-size: 16px !important;
   }
 
+  .flow-svg {
+    min-width: 480px;
+  }
+
   h1 {
     font-size: 24px !important;
   }
@@ -75,3 +79,6 @@ textarea { resize: none; width: 100%; }
     display: none;
   }
 }
+
+.flow-svg { display: block; }
+.feature-video { aspect-ratio: 16 / 9; object-fit: contain; }
