@@ -29,7 +29,7 @@ export function FlowDiagram({ title, desc, steps }: { title: string; desc: strin
           const x = i * (boxW + gap)
           return (
             <g key={i}>
-              <rect x={x} y={4} width={boxW} height={boxH} rx={10} fill="#E11D48" />
+              <rect x={x} y={4} width={boxW} height={boxH} rx={10} fill="#FB7185" />
               <text x={x + boxW / 2} y={4 + boxH / 2 + 5} textAnchor="middle" fill="#F8FAFC" fontSize="15" fontWeight="700" fontFamily="-apple-system, sans-serif">
                 {step.label}
               </text>
