@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.1.5](https://github.com/hungphamtan/masqo/compare/web-v0.1.4...web-v0.1.5) (2026-09-28)
+
+
+### Bug Fixes
+
+* **release:** add repository field to package.json for provenance ([2554d27](https://github.com/hungphamtan/masqo/commit/2554d27b79c97433d662588aec8733037fba2f9d))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * @masqo/engine bumped from file:../engine to 0.1.4
+    * @masqo/shared bumped from file:../shared to 0.1.4
+
 ## [0.1.4](https://github.com/hungphamtan/masqo/compare/web-v0.1.3...web-v0.1.4) (2026-09-28)
 
 
