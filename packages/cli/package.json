@@ -2,6 +2,11 @@
   "name": "@masqo/cli",
   "version": "0.1.3",
   "description": "Local secret redaction engine - detect and mask API keys, tokens, and passwords before they leak",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hungphamtan/masqo.git",
+    "directory": "packages/cli"
+  },
   "type": "module",
   "publishConfig": {
     "access": "public"

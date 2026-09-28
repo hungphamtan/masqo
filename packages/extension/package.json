@@ -2,6 +2,11 @@
   "name": "@masqo/extension",
   "version": "0.1.4",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hungphamtan/masqo.git",
+    "directory": "packages/extension"
+  },
   "scripts": {
     "build": "vite build && node --experimental-strip-types build-content-scripts.mts",
     "dev": "vite build --watch",

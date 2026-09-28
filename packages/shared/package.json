@@ -1,6 +1,11 @@
 {
   "name": "@masqo/shared",
   "version": "0.1.3",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hungphamtan/masqo.git",
+    "directory": "packages/shared"
+  },
   "publishConfig": {
     "access": "public"
   },
