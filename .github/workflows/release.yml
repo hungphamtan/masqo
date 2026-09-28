@@ -5,9 +5,14 @@ on:
     tags:
       - 'v*.*.*'
       - '*-v*.*.*'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Tag or ref to build and publish (e.g. engine-v0.1.3)'
+        required: true
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release-${{ github.ref }}-${{ github.event.inputs.ref }}
   cancel-in-progress: false
 
 jobs:
@@ -21,6 +26,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
 
       - uses: actions/setup-node@v4
         with:
@@ -42,21 +49,18 @@ jobs:
         working-directory: packages/shared
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        continue-on-error: true
 
       - name: Publish @masqo/engine to npm
         run: npm publish --provenance --access public
         working-directory: packages/engine
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        continue-on-error: true
 
       - name: Publish @masqo/cli to npm
         run: npm publish --provenance --access public
         working-directory: packages/cli
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        continue-on-error: true
 
       - name: Upload release artifacts
         uses: softprops/action-gh-release@v2
