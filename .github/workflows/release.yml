@@ -63,6 +63,9 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Upload release artifacts
+        # Only runs for tag pushes; GitHub Releases require a tag, so this is
+        # skipped for manual workflow_dispatch runs against a branch.
+        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           generate_release_notes: true
