@@ -3,7 +3,14 @@ import type { Detection } from '@masqo/shared'
 const EMAIL_PATTERN = /[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g
 
 // E.164 and common national formats: +1-555-123-4567, (555) 123-4567, 555.123.4567
-const PHONE_PATTERN = /(?:\+?\d{1,3}[\s\-.]?)?\(?\d{3}\)?[\s\-.]?\d{3}[\s\-.]?\d{4}\b/g
+// Requires at least one phone-style separator/prefix so bare digit runs (e.g. Confluence
+// page IDs like "1234567890") are not misclassified as phone numbers.
+const PHONE_PATTERN =
+  /(?:\+\d{1,3}[\s\-.]?\d{3}[\s\-.]?\d{3}[\s\-.]?\d{4}|\(\d{3}\)[\s\-.]?\d{3}[\s\-.]?\d{4}|\d{3}[\s\-.]\d{3}[\s\-.]\d{4})\b/g
+
+// Identifier-style context that indicates a nearby number is an opaque ID, not a phone
+// number (e.g. Confluence "pageId=123456789" or "/pages/123456789/Title").
+const ID_CONTEXT_PATTERN = /(?:page[_-]?id|confluence\.[a-z0-9.-]+\/[a-z]+\/pages?)/i
 
 // US SSN: 123-45-6789 or 123 45 6789 (not 000, not 666, not 900-999 area)
 const SSN_PATTERN = /\b(?!000|666|9\d{2})\d{3}[- ]\d{2}[- ]\d{4}\b/g
@@ -41,6 +48,11 @@ export function detectPii(input: string): Detection[] {
     const digits = match[0].replace(/\D/g, '')
     // require 10-11 digits to reduce false positives
     if (digits.length < 10 || digits.length > 11) continue
+    // skip matches immediately preceded by identifier context (e.g. "pageId: 1234567890"),
+    // not real phone numbers. Only look backward so unrelated IDs later in the text don't
+    // suppress a genuine phone number earlier in the text.
+    const contextStart = Math.max(0, match.index - 20)
+    if (ID_CONTEXT_PATTERN.test(input.slice(contextStart, match.index))) continue
     detections.push({
       type: 'phone-number',
       position: { start: match.index, end: match.index + match[0].length },

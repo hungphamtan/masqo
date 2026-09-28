@@ -49,6 +49,26 @@ describe('PII Detector', () => {
       const r = detectPii('error code 123-456')
       expect(r.filter((d) => d.type === 'phone-number')).toHaveLength(0)
     })
+
+    it('does not flag bare 10-digit Confluence page ID', () => {
+      const r = detectPii('pageId=1234567890')
+      expect(r.filter((d) => d.type === 'phone-number')).toHaveLength(0)
+    })
+
+    it('does not flag bare digit run in a Confluence URL', () => {
+      const r = detectPii('https://acme.atlassian.net/wiki/spaces/ENG/pages/1234567890/Runbook')
+      expect(r.filter((d) => d.type === 'phone-number')).toHaveLength(0)
+    })
+
+    it('does not flag page_id snake_case field context', () => {
+      const r = detectPii('page_id: 9876543210')
+      expect(r.filter((d) => d.type === 'phone-number')).toHaveLength(0)
+    })
+
+    it('still flags a real phone number even with unrelated nearby digits', () => {
+      const r = detectPii('call 415-555-1234 about pageId 1234567890')
+      expect(r.some((d) => d.type === 'phone-number' && d.originalText === '415-555-1234')).toBe(true)
+    })
   })
 
   describe('SSN', () => {
