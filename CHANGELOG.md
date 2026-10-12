@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.7](https://github.com/hungphamtan/masqo/compare/masqo-v0.1.6...masqo-v0.1.7) (2026-10-12)
+
+
+### Bug Fixes
+
+* npm vulnerability package ([33f0c0f](https://github.com/hungphamtan/masqo/commit/33f0c0fda1f8623b110f349e5d8eb7ed5b4960ff))
+* use tilde version of react and react-dom ([cf1c440](https://github.com/hungphamtan/masqo/commit/cf1c44013700de45ce197318e881db4d508f6da9))
+* use tilde version of react and react-dom ([b209885](https://github.com/hungphamtan/masqo/commit/b209885084a62955cdefe091de20f73075465932))
+
 ## [0.1.6](https://github.com/hungphamtan/masqo/compare/masqo-v0.1.5...masqo-v0.1.6) (2026-09-28)
 
 

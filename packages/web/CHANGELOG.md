@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.6](https://github.com/hungphamtan/masqo/compare/web-v0.1.5...web-v0.1.6) (2026-10-12)
+
+
+### Bug Fixes
+
+* use tilde version of react and react-dom ([b209885](https://github.com/hungphamtan/masqo/commit/b209885084a62955cdefe091de20f73075465932))
+
 ## [0.1.5](https://github.com/hungphamtan/masqo/compare/web-v0.1.4...web-v0.1.5) (2026-09-28)
 
 
